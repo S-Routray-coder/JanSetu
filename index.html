@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JanSetu | Evidence-Driven Civic Action</title>
+
+    <meta name="description"
+        content="Report civic issues, track resolution and help shape your community through participatory budgeting.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar" id="navbar">
+
+        <div class="logo">
+            <div class="logo-mark">
+                <span>+</span>
+            </div>
+
+            <div class="logo-text">
+                <h2>Jan<span>Setu</span></h2>
+                <p>Evidence-driven civic action</p>
+            </div>
+        </div>
+        <div>
+            
+        </div>
+
+        <nav class="desktop-nav">
+            <a href="#home" class="active">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#budget">Budget</a>
+            <a href="#transparency">Transparency</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <button  class="btn btn-outline-primary" onclick="showLogin()">
+                Login
+            </button>
+        </div>
+        <button class="mobile_login" onclick="showLogin()">
+          login
+        </button>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            ☰
+        </button>
+        
+
+
+    </header>
+
+
+    <!-- MOBILE MENU -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+        <a href="#home" onclick="closeMobileMenu()">Home</a>
+        <a href="#features" onclick="closeMobileMenu()">Features</a>
+        <a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a>
+        <a href="#budget" onclick="closeMobileMenu()">Budget</a>
+        <a href="#transparency" onclick="closeMobileMenu()">Transparency</a>
+    </div>
+
+
+    <!-- ================= HERO ================= -->
+
+    <main>
+
+        <section class="hero" id="home">
+
+            <div class="hero-background">
+                <div class="glow glow-one"></div>
+                <div class="glow glow-two"></div>
+                <div class="grid-background"></div>
+            </div>
+
+            <div class="hero-content reveal">
+
+                <div class="hero-badge">
+                    <span class="live-dot"></span>
+                    AI-powered civic intelligence
+                </div>
+
+                <h1>
+                    Your Voice.
+                    <br>
+                    <span>Your City.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Report civic problems, track their resolution,
+                    and help your community decide where public
+                    money should make the biggest difference.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <button class="primary-btn" onclick="openReportModal()">
+                        Report an Issue
+                        <span>→</span>
+                    </button>
+
+                    <button class="secondary-btn" onclick="scrollToSection('features')">
+                        Explore Platform
+                        <span>↓</span>
+                    </button>
+
+                </div>
+
+                <div class="hero-trust">
+
+                    <div class="trust-item">
+                        <strong>12,480+</strong>
+                        <span>Issues reported</span>
+                    </div>
+
+                    <div class="trust-divider"></div>
+
+                    <div class="trust-item">
+                        <strong>8,920+</strong>
+                        <span>Issues resolved</span>
+                    </div>
+
+                    <div class="trust-divider"></div>
+
+                    <div class="trust-item">
+                        <strong>42</strong>
+                        <span>Wards connected</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO VISUAL -->
+
+            <div class="hero-visual reveal">
+
+                <div class="map-container">
+
+                    <div class="map-top-bar">
+                        <div>
+                            <span class="map-live"></span>
+                            LIVE CIVIC MAP
+                        </div>
+
+                        <span>WARD 12</span>
+                    </div>
+
+                    <div class="map">
+
+                        <div class="road road-one"></div>
+                        <div class="road road-two"></div>
+                        <div class="road road-three"></div>
+                        <div class="road road-four"></div>
+
+                        <div class="map-area area-one"></div>
+                        <div class="map-area area-two"></div>
+                        <div class="map-area area-three"></div>
+
+                        <div class="map-marker marker-one">
+                            <span>!</span>
+                        </div>
+
+                        <div class="map-marker marker-two">
+                            <span>!</span>
+                        </div>
+
+                        <div class="map-marker marker-three">
+                            <span>✓</span>
+                        </div>
+
+                        <div class="map-marker marker-four">
+                            <span>!</span>
+                        </div>
+
+                        <div class="map-center">
+                            <div class="center-pulse"></div>
+                            <div class="center-dot"></div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="map-bottom">
+
+                        <div class="map-stat">
+                            <span class="red-marker"></span>
+
+                            <div>
+                                <strong>18</strong>
+                                <small>Active issues</small>
+                            </div>
+                        </div>
+
+                        <div class="map-stat">
+                            <span class="green-marker"></span>
+
+                            <div>
+                                <strong>34</strong>
+                                <small>Resolved</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FLOATING CARD -->
+
+                <div class="floating-card issue-card">
+
+                    <div class="floating-icon warning-icon">
+                        !
+                    </div>
+
+                    <div>
+                        <strong>Pothole detected</strong>
+                        <span>AI verified · Ward 12</span>
+                    </div>
+
+                    <div class="priority">
+                        HIGH
+                    </div>
+
+                </div>
+
+
+                <div class="floating-card resolved-card">
+
+                    <div class="floating-icon success-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <strong>Issue resolved</strong>
+                        <span>Evidence uploaded</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATS ================= -->
+
+        <section class="stats-section">
+
+            <div class="stats-container">
+
+                <div class="stat-card reveal">
+
+                    <div class="stat-icon blue">
+                        ◉
+                    </div>
+
+                    <div>
+                        <h3 data-target="12480">0</h3>
+                        <p>Issues Reported</p>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card reveal">
+
+                    <div class="stat-icon green">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h3 data-target="8920">0</h3>
+                        <p>Issues Resolved</p>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card reveal">
+
+                    <div class="stat-icon purple">
+                        ◎
+                    </div>
+
+                    <div>
+                        <h3 data-target="42">0</h3>
+                        <p>Active Wards</p>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card reveal">
+
+                    <div class="stat-icon orange">
+                        ₹
+                    </div>
+
+                    <div>
+                        <h3>₹18.4Cr</h3>
+                        <p>Community Budget</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FEATURES ================= -->
+
+        <section class="features-section section" id="features">
+
+            <div class="section-heading reveal">
+
+                <span class="section-label">
+                    CIVIC INTELLIGENCE
+                </span>
+
+                <h2>
+                    From complaint
+                    <span>to real-world action.</span>
+                </h2>
+
+                <p>
+                    One platform connecting citizens, AI and
+                    civic authorities to create measurable change.
+                </p>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+                <!-- CARD 1 -->
+
+                <article class="feature-card reveal">
+
+                    <div class="feature-number">
+                        01
+                    </div>
+
+                    <div class="feature-icon-large blue-icon">
+                        ✦
+                    </div>
+
+                    <h3>
+                        AI Grievance Triage
+                    </h3>
+
+                    <p>
+                        Automatically understand complaints,
+                        classify issues, identify severity and
+                        route them to the right department.
+                    </p>
+
+                    <a href="#how-it-works">
+                        Learn more →
+                    </a>
+
+                </article>
+
+
+                <!-- CARD 2 -->
+
+                <article class="feature-card reveal">
+
+                    <div class="feature-number">
+                        02
+                    </div>
+
+                    <div class="feature-icon-large purple-icon">
+                        ⌖
+                    </div>
+
+                    <h3>
+                        Smart Duplicate Detection
+                    </h3>
+
+                    <p>
+                        Detect multiple reports describing the
+                        same civic problem and group them into
+                        a single actionable issue.
+                    </p>
+
+                    <a href="#how-it-works">
+                        Learn more →
+                    </a>
+
+                </article>
+
+
+                <!-- CARD 3 -->
+
+                <article class="feature-card reveal">
+
+                    <div class="feature-number">
+                        03
+                    </div>
+
+                    <div class="feature-icon-large green-icon">
+                        ◉
+                    </div>
+
+                    <h3>
+                        Evidence-Grounded Resolution
+                    </h3>
+
+                    <p>
+                        Every resolution can be supported with
+                        images, documents and verification
+                        evidence.
+                    </p>
+
+                    <a href="#transparency">
+                        View evidence →
+                    </a>
+
+                </article>
+
+
+                <!-- CARD 4 -->
+
+                <article class="feature-card reveal">
+
+                    <div class="feature-number">
+                        04
+                    </div>
+
+                    <div class="feature-icon-large orange-icon">
+                        ♢
+                    </div>
+
+                    <h3>
+                        Participatory Budgeting
+                    </h3>
+
+                    <p>
+                        Citizens propose, discuss and prioritize
+                        small public works for their communities.
+                    </p>
+
+                    <a href="#budget">
+                        Explore budget →
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= HOW IT WORKS ================= -->
+
+        <section class="how-section section" id="how-it-works">
+
+            <div class="section-heading centered reveal">
+
+                <span class="section-label">
+                    HOW IT WORKS
+                </span>
+
+                <h2>
+                    A complaint becomes
+                    <span>action.</span>
+                </h2>
+
+                <p>
+                    Our system creates a transparent journey
+                    from the first citizen report to verified resolution.
+                </p>
+
+            </div>
+
+
+            <div class="timeline">
+
+                <div class="timeline-line"></div>
+
+
+                <div class="timeline-step reveal">
+
+                    <div class="timeline-number">
+                        01
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <span>STEP ONE</span>
+
+                        <h3>Report</h3>
+
+                        <p>
+                            Submit a problem using text,
+                            photo, voice or location.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step reveal">
+
+                    <div class="timeline-number">
+                        02
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <span>STEP TWO</span>
+
+                        <h3>AI Understands</h3>
+
+                        <p>
+                            AI identifies category, severity,
+                            location and similar reports.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step reveal">
+
+                    <div class="timeline-number">
+                        03
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <span>STEP THREE</span>
+
+                        <h3>Smart Routing</h3>
+
+                        <p>
+                            The issue is routed to the
+                            responsible civic department.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step reveal">
+
+                    <div class="timeline-number">
+                        04
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <span>STEP FOUR</span>
+
+                        <h3>Evidence</h3>
+
+                        <p>
+                            Authorities upload evidence
+                            when the issue is addressed.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-step reveal">
+
+                    <div class="timeline-number">
+                        05
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <span>STEP FIVE</span>
+
+                        <h3>Citizen Verifies</h3>
+
+                        <p>
+                            Citizens can verify whether
+                            the problem was actually solved.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= BUDGET ================= -->
+
+        <section class="budget-section section" id="budget">
+
+            <div class="budget-content reveal">
+
+                <span class="section-label">
+                    PARTICIPATORY BUDGETING
+                </span>
+
+                <h2>
+                    Help decide where
+                    <span>your city's money goes.</span>
+                </h2>
+
+                <p>
+                    Communities can use real civic data to
+                    propose and prioritize small public works.
+                    Every vote is visible. Every project is traceable.
+                </p>
+
+                <div class="budget-actions">
+
+                    <button class="primary-btn" onclick="showBudgetMessage()">
+                        Explore Your Ward →
+                    </button>
+
+                    <span>
+                        Transparent · Community-led · Evidence-based
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUDGET CARD -->
+
+            <div class="budget-dashboard reveal">
+
+                <div class="budget-top">
+
+                    <div>
+                        <span>WARD 12</span>
+                        <h3>Community Projects</h3>
+                    </div>
+
+                    <div class="budget-amount">
+                        <small>Available</small>
+                        <strong>₹2.4 Cr</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- PROJECT -->
+
+                <div class="project">
+
+                    <div class="project-icon">
+                        💡
+                    </div>
+
+                    <div class="project-info">
+
+                        <div class="project-title">
+                            <strong>Smart Street Lighting</strong>
+                            <span>1,240 votes</span>
+                        </div>
+
+                        <div class="project-progress">
+                            <span style="width: 78%"></span>
+                        </div>
+
+                        <small>
+                            Estimated cost · ₹42 lakh
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="project">
+
+                    <div class="project-icon">
+                        🛣
+                    </div>
+
+                    <div class="project-info">
+
+                        <div class="project-title">
+                            <strong>Road Improvement</strong>
+                            <span>980 votes</span>
+                        </div>
+
+                        <div class="project-progress">
+                            <span style="width: 61%"></span>
+                        </div>
+
+                        <small>
+                            Estimated cost · ₹68 lakh
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="project">
+
+                    <div class="project-icon">
+                        🌳
+                    </div>
+
+                    <div class="project-info">
+
+                        <div class="project-title">
+                            <strong>Community Park</strong>
+                            <span>720 votes</span>
+                        </div>
+
+                        <div class="project-progress">
+                            <span style="width: 48%"></span>
+                        </div>
+
+                        <small>
+                            Estimated cost · ₹31 lakh
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TRANSPARENCY ================= -->
+
+        <section class="transparency-section section" id="transparency">
+
+            <div class="transparency-container">
+
+                <div class="section-heading centered reveal">
+
+                    <span class="section-label">
+                        PUBLIC TRANSPARENCY
+                    </span>
+
+                    <h2>
+                        Make civic progress
+                        <span>visible.</span>
+                    </h2>
+
+                    <p>
+                        Citizens should be able to see how their
+                        city is performing and where problems remain.
+                    </p>
+
+                </div>
+
+
+                <div class="transparency-grid">
+
+                    <div class="transparency-card reveal">
+
+                        <span>RESOLUTION RATE</span>
+
+                        <strong>71.5%</strong>
+
+                        <div class="big-progress">
+                            <span style="width: 71.5%"></span>
+                        </div>
+
+                        <small>
+                            +8.4% compared to last quarter
+                        </small>
+
+                    </div>
+
+
+                    <div class="transparency-card reveal">
+
+                        <span>TOP CIVIC PROBLEMS</span>
+
+                        <div class="bar-item">
+                            <label>Roads</label>
+                            <div>
+                                <span style="width: 90%"></span>
+                            </div>
+                        </div>
+
+                        <div class="bar-item">
+                            <label>Water</label>
+                            <div>
+                                <span style="width: 74%"></span>
+                            </div>
+                        </div>
+
+                        <div class="bar-item">
+                            <label>Waste</label>
+                            <div>
+                                <span style="width: 61%"></span>
+                            </div>
+                        </div>
+
+                        <div class="bar-item">
+                            <label>Lighting</label>
+                            <div>
+                                <span style="width: 48%"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="transparency-card reveal">
+
+                        <span>DEPARTMENT PERFORMANCE</span>
+
+                        <div class="department">
+
+                            <div>
+                                <label>Road Division</label>
+                                <strong>82%</strong>
+                            </div>
+
+                            <div class="mini-progress">
+                                <span style="width:82%"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="department">
+
+                            <div>
+                                <label>Water Division</label>
+                                <strong>74%</strong>
+                            </div>
+
+                            <div class="mini-progress">
+                                <span style="width:74%"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="department">
+
+                            <div>
+                                <label>Waste Management</label>
+                                <strong>91%</strong>
+                            </div>
+
+                            <div class="mini-progress">
+                                <span style="width:91%"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CTA ================= -->
+
+        <section class="cta-section">
+
+            <div class="cta-glow"></div>
+
+            <div class="cta-content reveal">
+
+                <span class="section-label">
+                    YOUR CITY NEEDS YOUR VOICE
+                </span>
+
+                <h2>
+                    See a problem?
+                    <br>
+                    <span>Make it visible.</span>
+                </h2>
+
+                <p>
+                    One report can start a chain of action.
+                </p>
+
+                <button class="primary-btn large-btn"
+                    onclick="openReportModal()">
+
+                    Report a Civic Issue
+                    <span>→</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <div class="logo">
+
+                    <div class="logo-mark">
+                        <span>+</span>
+                    </div>
+
+                    <div class="logo-text">
+                        <h2>Jan<span>Setu</span></h2>
+                        <p>Evidence-driven civic action</p>
+                    </div>
+
+                </div>
+
+                <p class="footer-description">
+                    Building transparent, evidence-driven
+                    and participatory communities.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>Platform</h4>
+
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it works</a>
+                <a href="#budget">Participatory Budget</a>
+                <a href="#transparency">Transparency</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>For Citizens</h4>
+
+                <a href="#">Report an Issue</a>
+                <a href="#">Track Complaint</a>
+                <a href="#">Explore Ward</a>
+                <a href="#">Vote on Projects</a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h4>About</h4>
+
+                <a href="#">Our Mission</a>
+                <a href="#">Privacy</a>
+                <a href="#">Accessibility</a>
+                <a href="#">Contact</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 CivicConnect. Built for smarter communities.
+            </p>
+
+            <div>
+                <span>SIH 2026</span>
+                <span>•</span>
+                <span>AI + CivicTech</span>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================= REPORT MODAL ================= -->
+
+    <div class="modal-overlay" id="reportModal">
+
+        <div class="report-modal">
+
+            <button class="modal-close" onclick="closeReportModal()">
+                ×
+            </button>
+
+            <div class="modal-header">
+
+                <span class="section-label">
+                    REPORT A PROBLEM
+                </span>
+
+                <h2>
+                    What's happening?
+                </h2>
+
+                <p>
+                    Tell us about a civic problem in your area.
+                </p>
+
+            </div>
+
+
+            <div class="report-form">
+
+                <label>
+                    Describe the problem
+                </label>
+
+                <textarea id="issueInput"
+                    placeholder="Example: There is a large pothole near the government school..."></textarea>
+
+
+                <div class="report-tools">
+
+                    <button type="button" onclick="showComingSoon('Photo upload')">
+                        <span>📷</span>
+                        Add Photo
+                    </button>
+
+                    <button type="button" onclick="startVoiceDemo()">
+                        <span>🎤</span>
+                        Voice
+                    </button>
+
+                    <button type="button" onclick="detectLocation()">
+                        <span>📍</span>
+                        Location
+                    </button>
+
+                </div>
+
+
+                <div id="locationMessage" class="location-message"></div>
+
+
+                <div class="ai-preview" id="aiPreview">
+
+                    <div class="ai-header">
+
+                        <div class="ai-status">
+                            <span class="ai-dot"></span>
+                            AI Analysis
+                        </div>
+
+                        <span>
+                            Preview
+                        </span>
+
+                    </div>
+
+                    <p>
+                        Describe your issue to see an AI triage preview.
+                    </p>
+
+                </div>
+
+
+                <button class="submit-report-btn"
+                    onclick="submitReport()">
+
+                    Submit Issue
+                    <span>→</span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= LOGIN MODAL ================= -->
+
+    <div class="modal-overlay" id="loginModal">
+
+        <div class="login-modal">
+
+            <button class="modal-close" onclick="closeLogin()">
+                ×
+            </button>
+
+            <div class="login-icon">
+                +
+            </div>
+
+            <h2>
+                Welcome back
+            </h2>
+
+            <p>
+                Sign in to manage your civic reports.
+            </p>
+            <div class="role-selection">
+    <label class="role-option">
+        <input type="radio" name="role" value="citizen" checked>
+        <span class="custom-radio"></span>
+        <span>Citizen</span>
+    </label>
+
+    <label class="role-option">
+        <input type="radio" name="role" value="officer">
+        <span class="custom-radio"></span>
+        <span>Officer</span>
+    </label>
+</div>
+
+<!-- email -->
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Email address">
+<!-- Password -->
+            <input
+                type="password"
+                id ="loginPassword"
+                placeholder="Password">
+
+            <button class="submit-report-btn"
+                onclick="loginDemo()">
+
+                Login →
+            </button>
+            <h6 class ="signup-text">if you are new user please <a href="signup.html" class="s_up">sign up</a> first</h6>
+
+            <small class="demo-note">
+                Demo interface — authentication will be connected to the backend.
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOAST -->
+
+    <div class="toast" id="toast">
+
+        <span id="toastIcon">✓</span>
+
+        <p id="toastMessage">
+            Success
+        </p>
+
+    </div>
+
+
+    <script src="api.js"></script>
+    <script src="whatsapp-bot.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

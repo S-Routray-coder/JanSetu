@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="JanSetu Officer Dashboard - Civic Grievance Triage and Resolution"
+    >
+
+    <title>JanSetu | Officer Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="officerdashboard.css"
+    >
+    <!-- Leaflet CSS for Interactive Civic Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     MOBILE OVERLAY
+========================================= -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    onclick="closeSidebar()"
+></div>
+
+
+<!-- =========================================
+     SIDEBAR
+========================================= -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            J
+        </div>
+
+        <div>
+
+            <h2>
+                JanSetu
+            </h2>
+
+            <span>
+                Civic Intelligence
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="navigation">
+
+
+        <p class="nav-heading">
+            OPERATIONS
+        </p>
+
+
+        <a
+            href="#"
+            class="nav-link active"
+            onclick="showSection('overview', this)"
+        >
+
+            <span class="nav-icon">
+                ▦
+            </span>
+
+            Overview
+
+        </a>
+
+
+        <a
+            href="#grievances"
+            class="nav-link"
+            onclick="showSection('grievances', this)"
+        >
+
+            <span class="nav-icon">
+                ▤
+            </span>
+
+            Grievances
+
+            <span class="nav-count">
+                12
+            </span>
+
+        </a>
+
+
+        <a
+            href="#priority"
+            class="nav-link"
+            onclick="showSection('priority', this)"
+        >
+
+            <span class="nav-icon">
+                !
+            </span>
+
+            Priority Queue
+
+            <span class="nav-count danger">
+                4
+            </span>
+
+        </a>
+
+
+        <a
+            href="#map"
+            class="nav-link"
+            onclick="showSection('map', this)"
+        >
+
+            <span class="nav-icon">
+                ⌖
+            </span>
+
+            Civic Map
+
+        </a>
+
+
+        <p class="nav-heading">
+            MANAGEMENT
+        </p>
+
+
+        <a
+            href="#assignments"
+            class="nav-link"
+            onclick="showSection('assignments', this)"
+        >
+
+            <span class="nav-icon">
+                ⇄
+            </span>
+
+            Assignments
+
+            <span class="nav-count" id="assignmentsNavCount">
+                6
+            </span>
+
+        </a>
+
+
+        <a
+            href="#evidence"
+            class="nav-link"
+            onclick="showSection('evidence', this)"
+        >
+
+            <span class="nav-icon">
+                ◈
+            </span>
+
+            Evidence Review
+
+            <span class="nav-count">
+                5
+            </span>
+
+        </a>
+
+
+        <a
+            href="#analytics"
+            class="nav-link"
+            onclick="showSection('analytics', this)"
+        >
+
+            <span class="nav-icon">
+                ◒
+            </span>
+
+            Analytics
+
+        </a>
+
+
+        <p class="nav-heading">
+            SYSTEM
+        </p>
+
+
+        <a
+            href="#notifications"
+            class="nav-link"
+            onclick="showSection('notifications', this)"
+        >
+
+            <span class="nav-icon">
+                ♢
+            </span>
+
+            Notifications
+
+            <span class="nav-count">
+                3
+            </span>
+
+        </a>
+
+
+        <a
+            href="#"
+            class="nav-link"
+            onclick="showToast('Officer profile settings coming soon.')"
+        >
+
+            <span class="nav-icon">
+                ⚙
+            </span>
+
+            Settings
+
+        </a>
+
+
+        <a
+            href="#"
+            class="nav-link"
+            onclick="logout()"
+        >
+
+            <span class="nav-icon">
+                ↪
+            </span>
+
+            Logout
+
+        </a>
+
+    </nav>
+
+
+    <!-- OFFICER CARD -->
+
+    <div class="officer-sidebar-card">
+
+        <div class="mini-avatar">
+            O
+        </div>
+
+        <div>
+
+            <strong>
+                Officer
+            </strong>
+
+            <span>
+                Municipal Administration
+            </span>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<div class="main-wrapper">
+
+
+    <!-- =====================================
+         TOPBAR
+    ====================================== -->
+
+    <header class="topbar">
+
+
+        <button
+            class="mobile-menu"
+            onclick="toggleSidebar()"
+        >
+            ☰
+        </button>
+
+
+        <!-- SEARCH -->
+
+        <div class="global-search">
+
+            <span>
+                ⌕
+            </span>
+
+            <input
+                type="search"
+                id="globalSearch"
+                placeholder="Search grievance ID, location..."
+            >
+
+            <kbd>
+                /
+            </kbd>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <div class="topbar-right">
+
+
+            <div class="office-status">
+
+                <span class="online-dot">
+                </span>
+
+                System Operational
+
+            </div>
+
+
+            <button
+                class="notification-btn"
+                onclick="showSection('notifications')"
+            >
+
+                ♢
+
+                <span>
+                    3
+                </span>
+
+            </button>
+
+
+            <div
+                class="officer-profile"
+                onclick="toggleProfileMenu()"
+            >
+
+                <div class="officer-avatar">
+                    OA
+                </div>
+
+                <div class="officer-info">
+
+                    <strong>
+                        Officer Admin
+                    </strong>
+
+                    <small>
+                        Ward 12
+                    </small>
+
+                </div>
+
+                <span>
+                    ▾
+                </span>
+
+            </div>
+
+
+            <!-- PROFILE MENU -->
+
+            <div
+                class="profile-dropdown"
+                id="profileDropdown"
+            >
+
+                <div class="profile-header">
+
+                    <div class="officer-avatar large">
+                        OA
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Officer Admin
+                        </strong>
+
+                        <span>
+                            Ward 12
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    onclick="showToast('Profile settings coming soon.')"
+                >
+                    ⚙ Settings
+                </button>
+
+
+                <button
+                    onclick="logout()"
+                >
+                    ↪ Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         CONTENT
+    ====================================== -->
+
+    <main class="content">
+
+
+        <!-- =================================
+             OVERVIEW
+        ================================== -->
+
+        <section
+            id="overview"
+            class="dashboard-section"
+        >
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        OFFICER CONTROL CENTER
+                    </span>
+
+                    <h1>
+                        Good morning, Officer 👋
+                    </h1>
+
+                    <p>
+                        Monitor, triage and resolve civic grievances
+                        assigned to your department.
+                    </p>
+
+                </div>
+
+
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <button class="pdf-export-btn" onclick="generateWardPDFReport()" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.88rem; padding: 10px 16px; border-radius: 10px; background: #2563eb; color: #fff; border: none; cursor: pointer; box-shadow: 0 2px 4px rgba(37,99,235,0.2);">
+                        <span>📄</span> Download Ward Report (PDF)
+                    </button>
+                    <div class="date-box">
+                        <span>TODAY</span>
+                        <strong id="currentDate">--</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 KPI CARDS
+            ================================== -->
+
+            <div class="stats-grid">
+
+
+                <!-- TOTAL -->
+
+                <div class="stat-card">
+
+                    <div class="stat-card-top">
+
+                        <div class="stat-icon blue">
+                            ▤
+                        </div>
+
+                        <span class="stat-trend positive">
+                            ↑ 8.4%
+                        </span>
+
+                    </div>
+
+                    <strong class="stat-number">
+                        128
+                    </strong>
+
+                    <span class="stat-title">
+                        Total Grievances
+                    </span>
+
+                    <span class="stat-subtitle">
+                        This month
+                    </span>
+
+                </div>
+
+
+                <!-- PENDING -->
+
+                <div class="stat-card">
+
+                    <div class="stat-card-top">
+
+                        <div class="stat-icon orange">
+                            ◷
+                        </div>
+
+                        <span class="stat-trend warning">
+                            Action needed
+                        </span>
+
+                    </div>
+
+                    <strong class="stat-number">
+                        24
+                    </strong>
+
+                    <span class="stat-title">
+                        Pending Review
+                    </span>
+
+                    <span class="stat-subtitle">
+                        Awaiting officer action
+                    </span>
+
+                </div>
+
+
+                <!-- URGENT -->
+
+                <div class="stat-card">
+
+                    <div class="stat-card-top">
+
+                        <div class="stat-icon red">
+                            !
+                        </div>
+
+                        <span class="stat-trend danger">
+                            4 urgent
+                        </span>
+
+                    </div>
+
+                    <strong class="stat-number">
+                        07
+                    </strong>
+
+                    <span class="stat-title">
+                        High Priority
+                    </span>
+
+                    <span class="stat-subtitle">
+                        Require immediate attention
+                    </span>
+
+                </div>
+
+
+                <!-- RESOLVED -->
+
+                <div class="stat-card">
+
+                    <div class="stat-card-top">
+
+                        <div class="stat-icon green">
+                            ✓
+                        </div>
+
+                        <span class="stat-trend positive">
+                            92%
+                        </span>
+
+                    </div>
+
+                    <strong class="stat-number">
+                        97
+                    </strong>
+
+                    <span class="stat-title">
+                        Resolved
+                    </span>
+
+                    <span class="stat-subtitle">
+                        Resolution rate
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PRIORITY + AI TRIAGE
+            ================================== -->
+
+            <div class="main-grid">
+
+
+                <!-- PRIORITY QUEUE -->
+
+                <div class="card priority-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                NEEDS ATTENTION
+                            </span>
+
+                            <h2>
+                                Priority Queue
+                            </h2>
+
+                            <p>
+                                Grievances ranked by urgency and community impact.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="text-button"
+                            onclick="showSection('priority')"
+                        >
+                            View all →
+                        </button>
+
+                    </div>
+
+
+                    <div class="grievance-list">
+
+
+                        <!-- ITEM -->
+
+                        <div
+                            class="grievance-item"
+                            data-id="JS-20481"
+                        >
+
+                            <div class="priority-indicator critical">
+                                !
+                            </div>
+
+
+                            <div class="grievance-main">
+
+                                <div class="grievance-title-row">
+
+                                    <h3>
+                                        Major road damage near Unit 4
+                                    </h3>
+
+                                    <span class="priority critical">
+                                        Critical
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    #JS-20481 • Road & Infrastructure
+                                </p>
+
+                                <div class="grievance-meta">
+
+                                    <span>
+                                        ⌖ Unit 4, Bhubaneswar
+                                    </span>
+
+                                    <span>
+                                        ◷ 2h ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="review-button"
+                                onclick="openGrievance('JS-20481')"
+                            >
+                                Review
+                            </button>
+
+                        </div>
+
+
+                        <!-- ITEM -->
+
+                        <div
+                            class="grievance-item"
+                            data-id="JS-20475"
+                        >
+
+                            <div class="priority-indicator high">
+                                !
+                            </div>
+
+
+                            <div class="grievance-main">
+
+                                <div class="grievance-title-row">
+
+                                    <h3>
+                                        Overflowing waste collection point
+                                    </h3>
+
+                                    <span class="priority high">
+                                        High
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    #JS-20475 • Waste Management
+                                </p>
+
+                                <div class="grievance-meta">
+
+                                    <span>
+                                        ⌖ Saheed Nagar
+                                    </span>
+
+                                    <span>
+                                        ◷ 5h ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="review-button"
+                                onclick="openGrievance('JS-20475')"
+                            >
+                                Review
+                            </button>
+
+                        </div>
+
+
+                        <!-- ITEM -->
+
+                        <div
+                            class="grievance-item"
+                            data-id="JS-20469"
+                        >
+
+                            <div class="priority-indicator medium">
+                                !
+                            </div>
+
+
+                            <div class="grievance-main">
+
+                                <div class="grievance-title-row">
+
+                                    <h3>
+                                        Non-functional street lights
+                                    </h3>
+
+                                    <span class="priority medium">
+                                        Medium
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    #JS-20469 • Street Lighting
+                                </p>
+
+                                <div class="grievance-meta">
+
+                                    <span>
+                                        ⌖ Ward 12
+                                    </span>
+
+                                    <span>
+                                        ◷ 1d ago
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="review-button"
+                                onclick="openGrievance('JS-20469')"
+                            >
+                                Review
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AI TRIAGE -->
+
+                <div class="card ai-card">
+
+
+                    <div class="ai-header">
+
+                        <div class="ai-icon">
+                            ✦
+                        </div>
+
+                        <div>
+
+                            <span class="eyebrow">
+                                AI ASSISTANT
+                            </span>
+
+                            <h2>
+                                Triage Insights
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ai-highlight">
+
+                        <strong>
+                            24
+                        </strong>
+
+                        <span>
+                            grievances ready for review
+                        </span>
+
+                    </div>
+
+
+                    <div class="ai-stat">
+
+                        <div>
+
+                            <span>
+                                Duplicate detected
+                            </span>
+
+                            <strong>
+                                08
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Misrouted
+                            </span>
+
+                            <strong>
+                                03
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ai-insight-box">
+
+                        <span class="insight-icon">
+                            ✦
+                        </span>
+
+                        <p>
+                            <strong>
+                                Pattern detected
+                            </strong>
+
+                            7 complaints about water supply
+                            were reported within the same area
+                            in the last 48 hours.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="ai-button"
+                        onclick="showToast('AI triage insights module opened.')"
+                    >
+                        Review AI Insights →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 DEPARTMENT PERFORMANCE
+            ================================== -->
+
+            <div class="lower-grid">
+
+
+                <!-- PERFORMANCE -->
+
+                <div class="card performance-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Department Performance
+                            </h2>
+
+                            <p>
+                                Current month resolution metrics
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="performance-list">
+
+
+                        <div class="performance-item">
+
+                            <div class="performance-label">
+
+                                <span>
+                                    Road & Infrastructure
+                                </span>
+
+                                <strong>
+                                    86%
+                                </strong>
+
+                            </div>
+
+                            <div class="progress">
+
+                                <div
+                                    style="width:86%"
+                                    class="progress-fill"
+                                >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="performance-item">
+
+                            <div class="performance-label">
+
+                                <span>
+                                    Waste Management
+                                </span>
+
+                                <strong>
+                                    94%
+                                </strong>
+
+                            </div>
+
+                            <div class="progress">
+
+                                <div
+                                    style="width:94%"
+                                    class="progress-fill green"
+                                >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="performance-item">
+
+                            <div class="performance-label">
+
+                                <span>
+                                    Street Lighting
+                                </span>
+
+                                <strong>
+                                    91%
+                                </strong>
+
+                            </div>
+
+                            <div class="progress">
+
+                                <div
+                                    style="width:91%"
+                                    class="progress-fill purple"
+                                >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- SLA -->
+
+                <div class="card sla-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                SLA Overview
+                            </h2>
+
+                            <p>
+                                Service-level compliance
+                            </p>
+
+                        </div>
+
+                        <span class="sla-score">
+                            94%
+                        </span>
+
+                    </div>
+
+
+                    <div class="sla-circle">
+
+                        <div>
+
+                            <strong>
+                                94%
+                            </strong>
+
+                            <span>
+                                On time
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="sla-details">
+
+                        <span>
+                            <i class="green-dot"></i>
+                            Within SLA: 118
+                        </span>
+
+                        <span>
+                            <i class="red-dot"></i>
+                            Breached: 10
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 CIVIC MAP
+            ================================== -->
+
+            <div
+                class="card map-card"
+                id="map"
+            >
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            GEOGRAPHIC VIEW
+                        </span>
+
+                        <h2>
+                            Civic Issue Map
+                        </h2>
+
+                        <p>
+                            Visualize grievance concentration across your jurisdiction.
+                        </p>
+
+                    </div>
+
+
+                    <div class="map-controls">
+
+                        <button
+                            class="map-filter active"
+                            onclick="filterOfficerMap('all', this)"
+                        >
+                            All Issues
+                        </button>
+
+                        <button
+                            class="map-filter"
+                            onclick="filterOfficerMap('critical', this)"
+                        >
+                            Critical Hazards
+                        </button>
+
+                        <button
+                            class="map-filter"
+                            onclick="filterOfficerMap('pending', this)"
+                        >
+                            Unresolved
+                        </button>
+
+                        <span style="background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; border: 1px solid #bfdbfe; display: inline-flex; align-items: center; gap: 4px; margin-left: 4px;">
+                            <span>🗺️</span> Google Maps
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- Live Leaflet Jurisdiction Map -->
+                <div id="officerLeafletMap" style="height: 420px; width: 100%; border-radius: 12px; margin-top: 12px; z-index: 1;"></div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================
+             GRIEVANCES SECTION
+        ================================== -->
+
+        <section
+            id="grievances"
+            class="dashboard-section hidden-section"
+        >
+
+            <div class="section-title">
+
+                <span class="eyebrow">
+                    CASE MANAGEMENT
+                </span>
+
+                <h1>
+                    Grievances
+                </h1>
+
+                <p>
+                    Review and manage grievances assigned to your department.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+
+                <div class="filter-toolbar">
+
+                    <div class="filter-search">
+
+                        ⌕
+
+                        <input
+                            type="text"
+                            id="grievanceSearch"
+                            placeholder="Search grievances..."
+                        >
+
+                    </div>
+
+
+                    <select
+                        id="statusFilter"
+                    >
+
+                        <option value="all">
+                            All Status
+                        </option>
+
+                        <option value="pending">
+                            Pending
+                        </option>
+
+                        <option value="progress">
+                            In Progress
+                        </option>
+
+                        <option value="resolved">
+                            Resolved
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        id="priorityFilter"
+                    >
+
+                        <option value="all">
+                            All Priority
+                        </option>
+
+                        <option value="critical">
+                            Critical
+                        </option>
+
+                        <option value="high">
+                            High
+                        </option>
+
+                        <option value="medium">
+                            Medium
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    class="table-container"
+                >
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Grievance
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    Location
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    SLA
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="grievanceTable"
+                        >
+
+                            <tr
+                                data-status="progress"
+                                data-priority="critical"
+                            >
+
+                                <td>
+
+                                    <strong>
+                                        #JS-20481
+                                    </strong>
+
+                                    <small>
+                                        Road damage
+                                    </small>
+
+                                </td>
+
+                                <td>
+                                    Infrastructure
+                                </td>
+
+                                <td>
+
+                                    <span class="priority critical">
+                                        Critical
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    Unit 4
+                                </td>
+
+                                <td>
+
+                                    <span class="status progress">
+                                        In Progress
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    <span class="sla-danger">
+                                        4h left
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="table-action"
+                                        onclick="openGrievance('JS-20481')"
+                                    >
+                                        Review
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr
+                                data-status="pending"
+                                data-priority="high"
+                            >
+
+                                <td>
+
+                                    <strong>
+                                        #JS-20475
+                                    </strong>
+
+                                    <small>
+                                        Waste overflow
+                                    </small>
+
+                                </td>
+
+                                <td>
+                                    Waste
+                                </td>
+
+                                <td>
+
+                                    <span class="priority high">
+                                        High
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    Saheed Nagar
+                                </td>
+
+                                <td>
+
+                                    <span class="status pending">
+                                        Pending
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    <span class="sla-warning">
+                                        11h left
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="table-action"
+                                        onclick="openGrievance('JS-20475')"
+                                    >
+                                        Review
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr
+                                data-status="resolved"
+                                data-priority="medium"
+                            >
+
+                                <td>
+
+                                    <strong>
+                                        #JS-20462
+                                    </strong>
+
+                                    <small>
+                                        Street light
+                                    </small>
+
+                                </td>
+
+                                <td>
+                                    Lighting
+                                </td>
+
+                                <td>
+
+                                    <span class="priority medium">
+                                        Medium
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    Ward 12
+                                </td>
+
+                                <td>
+
+                                    <span class="status resolved">
+                                        Resolved
+                                    </span>
+
+                                </td>
+
+                                <td>
+                                    <span class="sla-good">
+                                        Completed
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <button
+                                        class="table-action"
+                                        onclick="openGrievance('JS-20462')"
+                                    >
+                                        View
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             PRIORITY SECTION
+        ================================== -->
+
+        <section
+            id="priority"
+            class="dashboard-section hidden-section"
+        >
+
+            <div class="section-title">
+
+                <span class="eyebrow">
+                    URGENT OPERATIONS
+                </span>
+
+                <h1>
+                    Priority Queue
+                </h1>
+
+                <p>
+                    Cases requiring immediate attention based on severity,
+                    SLA and community impact.
+                </p>
+
+            </div>
+
+
+            <div class="priority-grid">
+
+                <div class="priority-summary critical-box">
+
+                    <span>
+                        Critical
+                    </span>
+
+                    <strong>
+                        4
+                    </strong>
+
+                    <small>
+                        Immediate action
+                    </small>
+
+                </div>
+
+
+                <div class="priority-summary high-box">
+
+                    <span>
+                        High
+                    </span>
+
+                    <strong>
+                        8
+                    </strong>
+
+                    <small>
+                        Review today
+                    </small>
+
+                </div>
+
+
+                <div class="priority-summary medium-box">
+
+                    <span>
+                        Medium
+                    </span>
+
+                    <strong>
+                        15
+                    </strong>
+
+                    <small>
+                        Review this week
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="priority-large-list">
+
+                    <div class="priority-large-item">
+
+                        <div class="priority-number">
+                            01
+                        </div>
+
+                        <div class="priority-large-content">
+
+                            <span class="priority critical">
+                                CRITICAL
+                            </span>
+
+                            <h3>
+                                Major road damage near Unit 4
+                            </h3>
+
+                            <p>
+                                17 duplicate reports detected in
+                                surrounding area.
+                            </p>
+
+                        </div>
+
+                        <button
+                            class="review-button"
+                            onclick="openGrievance('JS-20481')"
+                        >
+                            Review →
+                        </button>
+
+                    </div>
+
+
+                    <div class="priority-large-item">
+
+                        <div class="priority-number">
+                            02
+                        </div>
+
+                        <div class="priority-large-content">
+
+                            <span class="priority high">
+                                HIGH
+                            </span>
+
+                            <h3>
+                                Overflowing waste collection point
+                            </h3>
+
+                            <p>
+                                Community impact score: 87/100.
+                            </p>
+
+                        </div>
+
+                        <button
+                            class="review-button"
+                            onclick="openGrievance('JS-20475')"
+                        >
+                            Review →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             EVIDENCE
+        ================================== -->
+
+        <section
+            id="evidence"
+            class="dashboard-section hidden-section"
+        >
+
+            <div class="section-title">
+
+                <span class="eyebrow">
+                    RESOLUTION VERIFICATION
+                </span>
+
+                <h1>
+                    Evidence Review
+                </h1>
+
+                <p>
+                    Verify evidence submitted for resolved grievances.
+                </p>
+
+            </div>
+
+
+            <div class="evidence-grid" id="officerEvidenceGrid">
+
+
+                <div class="card evidence-item">
+
+                    <div class="evidence-image">
+
+                        <span>
+                            📷
+                        </span>
+
+                        <small>
+                            Resolution photo
+                        </small>
+
+                    </div>
+
+                    <div class="evidence-content">
+
+                        <span class="priority medium">
+                            #JS-20462
+                        </span>
+
+                        <h3>
+                            Street light repaired
+                        </h3>
+
+                        <p>
+                            Submitted by field officer 2 hours ago.
+                        </p>
+
+                        <div class="evidence-actions">
+
+                            <button
+                                class="approve-btn"
+                                onclick="approveEvidence(this)"
+                            >
+                                ✓ Approve
+                            </button>
+
+                            <button
+                                class="reject-btn"
+                                onclick="rejectEvidence(this)"
+                            >
+                                × Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card evidence-item">
+
+                    <div class="evidence-image">
+
+                        <span>
+                            📷
+                        </span>
+
+                        <small>
+                            Resolution photo
+                        </small>
+
+                    </div>
+
+                    <div class="evidence-content">
+
+                        <span class="priority high">
+                            #JS-20441
+                        </span>
+
+                        <h3>
+                            Garbage collection completed
+                        </h3>
+
+                        <p>
+                            Submitted by sanitation team 5 hours ago.
+                        </p>
+
+                        <div class="evidence-actions">
+
+                            <button
+                                class="approve-btn"
+                                onclick="approveEvidence(this)"
+                            >
+                                ✓ Approve
+                            </button>
+
+                            <button
+                                class="reject-btn"
+                                onclick="rejectEvidence(this)"
+                            >
+                                × Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             ANALYTICS
+        ================================== -->
+
+        <section
+            id="analytics"
+            class="dashboard-section hidden-section"
+        >
+
+            <div class="section-title">
+
+                <span class="eyebrow">
+                    DATA INTELLIGENCE
+                </span>
+
+                <h1>
+                    Analytics
+                </h1>
+
+                <p>
+                    Understand grievance trends and department performance.
+                </p>
+
+            </div>
+
+
+            <div class="analytics-grid">
+
+
+                <div class="card chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Grievance Trends
+                            </h2>
+
+                            <p>
+                                Reports received this month
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="fake-chart">
+
+                        <div class="chart-line">
+                        </div>
+
+                        <div class="chart-bars">
+
+                            <span style="height:45%">
+                            </span>
+
+                            <span style="height:65%">
+                            </span>
+
+                            <span style="height:40%">
+                            </span>
+
+                            <span style="height:75%">
+                            </span>
+
+                            <span style="height:55%">
+                            </span>
+
+                            <span style="height:85%">
+                            </span>
+
+                            <span style="height:70%">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="chart-labels">
+
+                        <span>
+                            W1
+                        </span>
+
+                        <span>
+                            W2
+                        </span>
+
+                        <span>
+                            W3
+                        </span>
+
+                        <span>
+                            W4
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card category-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Issue Categories
+                            </h2>
+
+                            <p>
+                                Distribution
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="category-list">
+
+                        <div>
+
+                            <span>
+                                Roads
+                            </span>
+
+                            <strong>
+                                38%
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Waste
+                            </span>
+
+                            <strong>
+                                26%
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Lighting
+                            </span>
+
+                            <strong>
+                                18%
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Water
+                            </span>
+
+                            <strong>
+                                11%
+                            </strong>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Other
+                            </span>
+
+                            <strong>
+                                7%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             NOTIFICATIONS
+        ================================== -->
+
+        <section
+            id="notifications"
+            class="dashboard-section hidden-section"
+        >
+
+            <div class="section-title">
+
+                <span class="eyebrow">
+                    SYSTEM UPDATES
+                </span>
+
+                <h1>
+                    Notifications
+                </h1>
+
+                <p>
+                    Important alerts and operational updates.
+                </p>
+
+            </div>
+
+
+            <div class="card notification-list">
+
+                <div class="notification-item">
+
+                    <div class="notification-icon red">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            4 critical grievances require immediate action.
+                        </strong>
+
+                        <p>
+                            Review the priority queue before their SLA expires.
+                        </p>
+
+                        <small>
+                            15 minutes ago
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification-item">
+
+                    <div class="notification-icon blue">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            AI detected a possible grievance cluster.
+                        </strong>
+
+                        <p>
+                            7 water-related complaints originated from the same area.
+                        </p>
+
+                        <small>
+                            1 hour ago
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification-item">
+
+                    <div class="notification-icon green">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Department achieved 94% SLA compliance.
+                        </strong>
+
+                        <p>
+                            Performance improved compared to last month.
+                        </p>
+
+                        <small>
+                            Yesterday
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= ASSIGNMENTS & DISPATCH WORKSPACE ================= -->
+        <section class="dashboard-section" id="assignments" style="display: none;">
+            <div class="page-title">
+                <div>
+                    <h1>Contractor & Engineer Assignments</h1>
+                    <p>Dispatch civic work orders, track contractor progress, and monitor SLA adherence</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <span style="background: #eff6ff; color: #2563eb; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; border: 1px solid #bfdbfe;">
+                        Active Contractors: 5 Agencies
+                    </span>
+                </div>
+            </div>
+
+            <!-- Quick Dispatch Stats -->
+            <div class="stats-grid" style="margin-top: 16px;">
+                <div class="card stat-card">
+                    <div class="stat-icon orange">⇄</div>
+                    <div class="stat-info">
+                        <strong id="unassignedCount">3</strong>
+                        <span>Pending Dispatch</span>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon blue">⚙</div>
+                    <div class="stat-info">
+                        <strong id="activeWorkOrdersCount">8</strong>
+                        <span>Active Work Orders</span>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <div class="stat-info">
+                        <strong id="proofVerifiedCount">14</strong>
+                        <span>Proof Verified</span>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon purple">⏱</div>
+                    <div class="stat-info">
+                        <strong>94.2%</strong>
+                        <span>SLA Adherence</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div>
+                        <h2 style="font-size: 15px; font-weight: 700; margin: 0;">Dispatched Grievances & Work Orders</h2>
+                        <small style="color: #64748b;">Review assigned agencies, SLA deadlines, and resolution photos</small>
+                    </div>
+                    <button class="primary-btn" onclick="openGrievance('JS-20481')" style="padding: 6px 14px; font-size: 12px; font-weight: 700; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer;">
+                        + New Dispatch
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Title / Category</th>
+                                <th>Assigned Contractor</th>
+                                <th>Work Order #</th>
+                                <th>Target SLA</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assignmentsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- WARD EMERGENCY BROADCAST & BULLETIN PUBLISHER -->
+            <div class="card" style="margin-top: 20px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                    <div style="background: #16a34a; color: #fff; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        📢
+                    </div>
+                    <div>
+                        <h2 style="font-size: 15px; font-weight: 700; margin: 0; color: #0f172a;">Publish Ward Announcement & Service Advisory</h2>
+                        <small style="color: #64748b;">Broadcast official notices (water supply interruptions, drain cleaning drives, power maintenance) to citizens.</small>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                    <div>
+                        <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Notice Headline / Title</label>
+                        <input type="text" id="officerBulletinTitle" placeholder="e.g. Scheduled Water Supply Maintenance (Sunday 8 AM - 2 PM)" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Service Category</label>
+                        <select id="officerBulletinCategory" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; background: #fff;">
+                            <option value="Water Supply">💧 Water Supply Advisory</option>
+                            <option value="Roadwork">🚧 Roadwork & Paving</option>
+                            <option value="Drainage">≋ Drainage & Desilting</option>
+                            <option value="Sanitation">🗑️ Cleanliness Drive</option>
+                            <option value="Power">⚡ Power Maintenance</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Target Ward / Urgency</label>
+                        <select id="officerBulletinUrgency" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; background: #fff;">
+                            <option value="Normal">🟢 Normal Notice</option>
+                            <option value="High">🟠 High Priority Advisory</option>
+                            <option value="Critical">🔴 Emergency Alert</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 11px; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Detailed Advisory Message</label>
+                    <textarea id="officerBulletinMessage" rows="2" placeholder="Enter detailed guidelines, affected landmarks, and helpline contacts for residents..." style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; font-family: inherit; box-sizing: border-box;"></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="button" onclick="publishOfficerWardBulletin()" style="background: #16a34a; color: #fff; font-size: 12px; font-weight: 700; padding: 8px 20px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                        <span>📢</span> Broadcast to Ward Citizens
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     GRIEVANCE MODAL
+========================================= -->
+
+<div
+    class="modal"
+    id="grievanceModal"
+>
+
+    <div class="modal-box">
+
+
+        <button
+            class="modal-close"
+            onclick="closeGrievance()"
+        >
+            ×
+        </button>
+
+
+        <span class="eyebrow">
+            GRIEVANCE REVIEW
+        </span>
+
+
+        <h2 id="modalTitle">
+            Major road damage near Unit 4
+        </h2>
+
+
+        <span
+            class="modal-id"
+            id="modalId"
+        >
+            #JS-20481
+        </span>
+
+
+        <!-- AI SUMMARY -->
+
+        <div class="ai-summary">
+
+            <div class="ai-small-icon">
+                ✦
+            </div>
+
+            <div>
+
+                <strong>
+                    AI Triage Summary
+                </strong>
+
+                <p id="modalAiSummary">
+
+                    Infrastructure issue detected.
+                    High community impact and multiple
+                    similar complaints detected nearby.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="modal-details">
+
+
+            <div>
+
+                <span>
+                    Category
+                </span>
+
+                <strong id="modalCategory">
+                    Infrastructure
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Priority
+                </span>
+
+                <strong id="modalPriority">
+                    Critical
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Location
+                </span>
+
+                <strong id="modalLocation">
+                    Unit 4
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    SLA
+                </span>
+
+                <strong class="sla-danger">
+                    4 hours remaining
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- CITIZEN DESCRIPTION -->
+
+        <div class="description-box">
+
+            <span>
+                CITIZEN DESCRIPTION
+            </span>
+
+            <p>
+                Large damaged section of road is causing
+                difficulty for vehicles and pedestrians.
+                The issue becomes particularly dangerous
+                during evening hours.
+            </p>
+
+        </div>
+
+
+        <!-- CONTRACTOR DISPATCH & WORK ORDER -->
+        <div style="margin: 16px 0; padding: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;">
+            <div style="font-size: 12px; font-weight: 700; color: #1e293b; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                <span>🚜</span> Contractor & Field Engineer Dispatch
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">
+                <div>
+                    <label style="font-size: 11px; color: #64748b; display: block; margin-bottom: 2px;">Assigned Agency:</label>
+                    <select id="dispatchContractorSelect" style="width: 100%; padding: 6px 8px; font-size: 11px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                        <option value="Apex Civic Infra Ltd.">Apex Civic Infra Ltd. (Roads)</option>
+                        <option value="Bhubaneswar Water Squad">Bhubaneswar Water Squad (PHED)</option>
+                        <option value="Green City Waste Solutions">Green City Waste Solutions (Sanitation)</option>
+                        <option value="Urban Grid Electricals">Urban Grid Electricals (Lighting)</option>
+                        <option value="Monsoon Drainage Rapid Response">Monsoon Drainage Rapid Response</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size: 11px; color: #64748b; display: block; margin-bottom: 2px;">Target SLA Turnaround:</label>
+                    <select id="dispatchSlaSelect" style="width: 100%; padding: 6px 8px; font-size: 11px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                        <option value="24 Hours (SLA Target)">24 Hours (Express Fix)</option>
+                        <option value="48 Hours (SLA Target)">48 Hours (Standard SLA)</option>
+                        <option value="72 Hours (SLA Target)">72 Hours (Major Repair)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="currentWorkOrderBadge" style="font-size: 11px; color: #16a34a; font-weight: 600;">Work Order: #WO-2026-881</span>
+                <button type="button" onclick="dispatchGrievanceContractor()" style="background: #2563eb; color: #fff; font-size: 11px; font-weight: 700; padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer;">
+                    🚀 Dispatch Work Order
+                </button>
+            </div>
+        </div>
+
+        <!-- OFFICIAL RESOLUTION PROOF UPLOADER -->
+        <div style="margin: 16px 0; padding: 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px;">
+            <div style="font-size: 12px; font-weight: 700; color: #166534; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                <span>📸</span> Upload Official Resolution Proof
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center; margin-bottom: 8px;">
+                <div>
+                    <label style="display: block; width: 100%; height: 80px; border: 2px dashed #86efac; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: #fff; overflow: hidden;">
+                        <img id="officerProofImgPreview" src="" alt="" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                        <span id="officerProofUploadPlaceholder" style="font-size: 10px; color: #16a34a; text-align: center; padding: 4px;">+ Attach Fix Photo</span>
+                        <input type="file" id="officerProofPhotoInput" accept="image/*" style="display: none;" onchange="handleOfficerProofPhotoSelected(this)">
+                    </label>
+                </div>
+                <div>
+                    <textarea id="officerResolutionNotes" rows="3" placeholder="Enter completion remarks & contractor certification..." style="width: 100%; padding: 6px 8px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; box-sizing: border-box;"></textarea>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="button" onclick="submitResolutionProofAndResolve()" style="background: #16a34a; color: #fff; font-size: 12px; font-weight: 700; padding: 7px 16px; border: none; border-radius: 6px; cursor: pointer;">
+                    ✓ Submit Proof & Mark Resolved
+                </button>
+            </div>
+        </div>
+
+        <!-- CITIZEN COMMUNITY REVIEWS VIEWER -->
+        <div id="officerReviewsContainer" style="margin: 16px 0; padding: 12px; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;">
+            <div style="font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Citizen Verification & Reviews</span>
+                <span id="officerReviewCountBadge" style="font-size: 10px; color: #64748b;">3 Reviews</span>
+            </div>
+            <div id="officerReviewsList" style="display: flex; flex-direction: column; gap: 6px;">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="modal-actions" style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+            <button
+                type="button"
+                onclick="handleDownloadOfficerCertificate()"
+                style="width: 100%; padding: 10px; font-weight: 700; background: #f0fdf4; color: #166534; border: 1px solid #86efac; border-radius: 8px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;"
+            >
+                <span>📜</span> Download Contractor Clearance Certificate (PDF)
+            </button>
+            <button
+                type="button"
+                class="primary-btn full-width"
+                onclick="closeGrievance()"
+                style="width: 100%; padding: 10px; font-weight: 700; background: #334155; color: #fff; border-radius: 8px; border: none; cursor: pointer;"
+            >
+                Done / Close Review
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     TOAST
+========================================= -->
+
+<div
+    class="toast"
+    id="toast"
+>
+
+    <span>
+        ✓
+    </span>
+
+    <p id="toastMessage">
+        Success
+    </p>
+
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="maps-adapter.js"></script>
+<script src="api.js"></script>
+<script src="pdf-generator.js"></script>
+<script src="whatsapp-bot.js"></script>
+<script src="officerdashboard.js"></script>
+
+</body>
+
+</html>

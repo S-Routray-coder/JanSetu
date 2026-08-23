@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="JanSetu Citizen Dashboard - Report, track and participate in civic improvement."
+    >
+
+    <title>JanSetu | Citizen Dashboard</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Leaflet CSS for Interactive Civic Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     MOBILE OVERLAY
+========================================= -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+    onclick="closeSidebar()">
+</div>
+
+
+<!-- =========================================
+     SIDEBAR
+========================================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            J
+        </div>
+
+        <div>
+
+            <h2>JanSetu</h2>
+
+            <span>
+                Civic Intelligence
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Navigation -->
+
+    <nav class="sidebar-nav">
+
+        <p class="nav-title">
+            MAIN
+        </p>
+
+
+        <a
+            href="#"
+            class="nav-link active"
+            onclick="showSection('overview', this)"
+        >
+
+            <span class="nav-icon">⌂</span>
+
+            Dashboard
+
+        </a>
+
+
+        <a
+            href="report.html"
+            class="nav-link"
+        >
+
+            <span class="nav-icon">＋</span>
+
+            Report Issue
+
+        </a>
+
+
+        <a
+            href="#reports"
+            class="nav-link"
+            onclick="showSection('reports', this)"
+        >
+
+            <span class="nav-icon">▤</span>
+
+            My Reports
+
+        </a>
+
+
+        <a
+            href="#map"
+            class="nav-link"
+            onclick="showSection('map', this)"
+        >
+
+            <span class="nav-icon">⌖</span>
+
+            Civic Map
+
+        </a>
+
+
+        <p class="nav-title">
+            COMMUNITY
+        </p>
+
+
+        <a
+            href="#budget"
+            class="nav-link"
+            onclick="showSection('budget', this)"
+        >
+
+            <span class="nav-icon">₹</span>
+
+            Participatory Budget
+
+        </a>
+
+
+        <a
+            href="#impact"
+            class="nav-link"
+            onclick="showSection('impact', this)"
+        >
+
+            <span class="nav-icon">◈</span>
+
+            Community Impact
+
+        </a>
+
+
+        <a
+            href="#notifications"
+            class="nav-link"
+            onclick="showSection('notifications', this)"
+        >
+
+            <span class="nav-icon">♢</span>
+
+            Notifications
+
+            <span class="notification-count">
+                3
+            </span>
+
+        </a>
+
+
+        <p class="nav-title">
+            ACCOUNT
+        </p>
+
+
+        <a
+            href="javascript:void(0)"
+            class="nav-link"
+            onclick="openProfileModal()"
+        >
+
+            <span class="nav-icon">◎</span>
+
+            My Profile
+
+        </a>
+
+
+        <a
+            href="#"
+            class="nav-link"
+            onclick="logout()"
+        >
+
+            <span class="nav-icon">↪</span>
+
+            Logout
+
+        </a>
+
+    </nav>
+
+
+    <!-- Sidebar bottom -->
+
+    <div class="sidebar-bottom">
+
+        <div class="help-card">
+
+            <div class="help-icon">
+                ?
+            </div>
+
+            <div>
+
+                <strong>
+                    Need help?
+                </strong>
+
+                <p>
+                    Learn how JanSetu works.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================
+     MAIN CONTENT
+========================================= -->
+
+<div class="main-wrapper">
+
+
+    <!-- =====================================
+         TOPBAR
+    ====================================== -->
+
+    <header class="topbar">
+
+        <button
+            class="mobile-menu-btn"
+            onclick="toggleSidebar()"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+
+        <div class="topbar-search">
+
+            <span>
+                ⌕
+            </span>
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search your reports..."
+            >
+
+        </div>
+
+
+        <div class="topbar-actions" style="display: flex; align-items: center; gap: 12px;">
+
+            <!-- Global Multilingual Language Switcher -->
+            <div class="global-lang-dropdown" style="display: flex; align-items: center; gap: 6px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                <span style="font-size: 14px;">🌐</span>
+                <select id="globalDashboardLangSelect" onchange="changeDashboardLanguage(this.value)" style="border: none; background: transparent; font-size: 12px; font-weight: 700; color: #1e293b; cursor: pointer; outline: none;">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी (Hindi)</option>
+                    <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                    <option value="bn">বাংলা (Bengali)</option>
+                    <option value="ta">தமிழ் (Tamil)</option>
+                    <option value="te">తెలుగు (Telugu)</option>
+                    <option value="mr">मराठी (Marathi)</option>
+                    <option value="gu">ગુજરાતી (Gujarati)</option>
+                    <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                </select>
+            </div>
+
+            <!-- Notification -->
+
+            <button
+                class="icon-btn notification-btn"
+                onclick="toggleNotifications()"
+                aria-label="Notifications"
+            >
+
+                ♢
+
+                <span class="notification-dot">
+                </span>
+
+            </button>
+
+
+            <!-- Profile -->
+
+            <div
+                class="user-profile"
+                onclick="toggleProfileMenu()"
+            >
+
+                <div class="avatar">
+                    C
+                </div>
+
+                <div class="user-info">
+
+                    <strong id="userName">
+                        Citizen
+                    </strong>
+
+                    <span>
+                        Citizen
+                    </span>
+
+                </div>
+
+                <span class="profile-arrow">
+                    ▾
+                </span>
+
+            </div>
+
+
+            <!-- Profile dropdown -->
+
+            <div
+                class="profile-menu"
+                id="profileMenu"
+            >
+
+                <div class="profile-menu-header">
+
+                    <div class="avatar large">
+                        C
+                    </div>
+
+                    <div>
+
+                        <strong id="profileMenuName">
+                            Citizen
+                        </strong>
+
+                        <span id="profileEmail">
+                            citizen@jansetu.in
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    onclick="openProfileModal()"
+                >
+                    👤 My Civic Profile
+                </button>
+
+
+                <button onclick="logout()">
+                    ↪ Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         CONTENT
+    ====================================== -->
+
+    <main class="content">
+
+
+        <!-- =================================
+             OVERVIEW
+        ================================== -->
+
+        <section
+            class="dashboard-section"
+            id="overview"
+        >
+
+
+            <!-- Welcome -->
+
+            <div class="welcome-row">
+
+                <div>
+
+                    <span class="eyebrow">
+                        CITIZEN PORTAL
+                    </span>
+
+                    <h1>
+                        Good morning, <span id="welcomeName">
+                            Citizen
+                        </span> 👋
+                    </h1>
+
+                    <p>
+                        Here's what's happening with your community.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="report.html"
+                    class="primary-btn"
+                >
+
+                    <span>＋</span>
+
+                    Report an Issue
+
+                </a>
+
+            </div>
+
+            <!-- =================================
+                 WARD COMMUNITY BULLETIN & ALERTS
+            ================================== -->
+            <div id="wardBulletinContainer" style="margin-bottom: 20px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: 12px; padding: 14px 18px; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.08);">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 260px;">
+                        <div style="background: #16a34a; color: #fff; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
+                            📢
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                                <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; background: #15803d; color: #fff; padding: 2px 7px; border-radius: 4px;">Official Ward Bulletin</span>
+                                <span id="bulletinWardTag" style="font-size: 11px; font-weight: 700; color: #166534;">Ward 12 • Saheed Nagar</span>
+                            </div>
+                            <strong id="bulletinHeadline" style="font-size: 13px; color: #14532d; display: block;">Scheduled Water Supply Maintenance (Sunday 8 AM - 2 PM)</strong>
+                            <p id="bulletinMessage" style="font-size: 11px; color: #166534; margin: 2px 0 0;">Municipal PHED pipeline interconnection work in progress. Please store adequate water.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap;">
+                        <button id="bulletinBriefingBtn" onclick="JanSetuBulletin.speakDashboardBriefing()" style="background: #166534; border: 1px solid #14532d; color: #ffffff; padding: 7px 14px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                            <span>🔊</span> Daily Civic Briefing
+                        </button>
+                        <button id="bulletinNoticeBtn" onclick="JanSetuBulletin.speakCurrentBulletin()" style="background: #ffffff; border: 1px solid #86efac; color: #15803d; padding: 7px 14px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                            <span>📢</span> Read Notice
+                        </button>
+                        <button id="bulletinStopAudioBtn" onclick="JanSetuBulletin.stopAudio()" style="display: none; background: #ef4444; border: 1px solid #dc2626; color: #ffffff; padding: 7px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                            ⏹ Stop
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Bulletin Audio Transcript & Equalizer -->
+                <div id="bulletinAudioStatusBox" style="display: none; margin-top: 12px; padding: 10px 14px; background: rgba(255,255,255,0.85); border: 1px solid #bbf7d0; border-radius: 8px; font-size: 11px; color: #14532d;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                        <span style="font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                            <span class="audio-wave-anim" style="color: #16a34a; font-weight: bold; letter-spacing: 2px;"> ▂▃▅▆▇▆▅▃ </span>
+                            <span id="bulletinAudioLangLabel">Playing in English...</span>
+                        </span>
+                        <span style="font-size: 10px; color: #64748b;">JanSetu Neural Voice</span>
+                    </div>
+                    <div id="bulletinAudioTranscriptText" style="line-height: 1.4; color: #166534;"></div>
+                </div>
+            </div>
+
+            <!-- =================================
+                 CIVIC KARMA & GAMIFICATION BADGE
+            ================================== -->
+            <div style="margin-bottom: 22px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 30px; background: #eff6ff; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1px solid #dbeafe;">🛡️</div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <strong style="font-size: 15px; color: #0f172a;">Civic Karma: <span id="karmaScoreDisplay" style="color: #2563eb;">340 Points</span></strong>
+                                <span style="background: #e0e7ff; color: #3730a3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px;">Rank: Ward Guardian (Level 3)</span>
+                            </div>
+                            <span style="font-size: 11px; color: #64748b;">Earn XP by reporting verified issues, voting on ward projects, and confirming repairs.</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <span style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 16px; display: inline-flex; align-items: center; gap: 4px;">🌟 Civic Champion</span>
+                        <span style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 16px; display: inline-flex; align-items: center; gap: 4px;">🔍 Verified Corroborator</span>
+                        <button onclick="openProfileModal()" style="background: #f8fafc; border: 1px solid #cbd5e1; color: #2563eb; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; cursor: pointer;">
+                            View All Badges →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Animated XP Level Progress Bar -->
+                <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                        <span style="font-weight: 600; color: #475569;">Level 3 Progress (340 / 500 XP)</span>
+                        <span style="color: #6366f1; font-weight: 700;">160 XP to Level 4 • Municipal Vanguard ⚡</span>
+                    </div>
+                    <div style="background: #e2e8f0; border-radius: 8px; height: 8px; overflow: hidden; width: 100%;">
+                        <div id="karmaProgressBar" style="background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%); height: 100%; width: 68%; border-radius: 8px; transition: width 0.5s ease;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =================================
+                 CLICKABLE STATS GRID (FILTERS & NAVIGATION)
+            ================================== -->
+            <div class="stats-grid">
+
+                <!-- 1. Reports Submitted (Click to show All reports) -->
+                <div class="stat-card" onclick="filterGrievanceList('all')" title="Click to view all your submitted reports" style="cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.07)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div class="stat-top">
+                        <div class="stat-icon blue">
+                            ▤
+                        </div>
+                        <span class="trend positive">
+                            ↑ 12%
+                        </span>
+                    </div>
+                    <h2 id="totalReportsCount">
+                        08
+                    </h2>
+                    <p>
+                        Reports Submitted
+                    </p>
+                    <span class="stat-description">
+                        Click to view all reports ↓
+                    </span>
+                </div>
+
+                <!-- 2. In Progress (Click to filter In Progress reports) -->
+                <div class="stat-card" onclick="filterGrievanceList('in_progress')" title="Click to filter In Progress reports" style="cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.07)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div class="stat-top">
+                        <div class="stat-icon orange">
+                            ◷
+                        </div>
+                        <span class="trend">
+                            Active
+                        </span>
+                    </div>
+                    <h2 id="inProgressReportsCount">
+                        03
+                    </h2>
+                    <p>
+                        In Progress
+                    </p>
+                    <span class="stat-description">
+                        Click to filter active issues ↓
+                    </span>
+                </div>
+
+                <!-- 3. Issues Resolved (Click to filter Resolved reports) -->
+                <div class="stat-card" onclick="filterGrievanceList('resolved')" title="Click to filter Resolved reports" style="cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.07)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div class="stat-top">
+                        <div class="stat-icon green">
+                            ✓
+                        </div>
+                        <span class="trend positive">
+                            85%
+                        </span>
+                    </div>
+                    <h2 id="resolvedReportsCount">
+                        04
+                    </h2>
+                    <p>
+                        Issues Resolved
+                    </p>
+                    <span class="stat-description">
+                        Click to filter resolved issues ↓
+                    </span>
+                </div>
+
+                <!-- 4. Community Impact (Click to navigate to Community Impact Section) -->
+                <div class="stat-card" onclick="showSection('impact')" title="Click to open Community Impact & Leaderboard" style="cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.07)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div class="stat-top">
+                        <div class="stat-icon purple">
+                            ◈
+                        </div>
+                        <span class="trend positive">
+                            +17
+                        </span>
+                    </div>
+                    <h2 id="communityImpactTotalCount">
+                        365
+                    </h2>
+                    <p>
+                        Community Impact
+                    </p>
+                    <span class="stat-description">
+                        Click to view impact breakdown →
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 MAIN GRID
+            ================================== -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- Recent reports -->
+
+                <div
+                    class="card reports-card"
+                    id="reports"
+                >
+
+                    <div class="card-header" style="display: flex; flex-direction: column; align-items: stretch; gap: 10px;">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h2>
+                                    Recent Reports
+                                </h2>
+                                <p>
+                                    Track your latest civic issues
+                                </p>
+                            </div>
+                            <button
+                                class="text-btn"
+                                onclick="showSection('reports')"
+                            >
+                                View all →
+                            </button>
+                        </div>
+
+                        <!-- Status Filter Pills -->
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap; padding-top: 4px; border-top: 1px dashed #e2e8f0;">
+                            <button class="filter-tab-pill active" onclick="filterGrievanceList('all', this)" style="padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 700; background: #2563eb; color: #fff; border: 1px solid #2563eb; cursor: pointer; transition: all 0.2s;">All (08)</button>
+                            <button class="filter-tab-pill" onclick="filterGrievanceList('in_progress', this)" style="padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; background: #fff; color: #475569; border: 1px solid #cbd5e1; cursor: pointer; transition: all 0.2s;">⏳ In Progress (03)</button>
+                            <button class="filter-tab-pill" onclick="filterGrievanceList('resolved', this)" style="padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; background: #fff; color: #475569; border: 1px solid #cbd5e1; cursor: pointer; transition: all 0.2s;">✅ Resolved (04)</button>
+                            <button class="filter-tab-pill" onclick="filterGrievanceList('critical', this)" style="padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; background: #fff; color: #dc2626; border: 1px solid #fca5a5; cursor: pointer; transition: all 0.2s;">🔥 Critical</button>
+                        </div>
+
+                    </div>
+
+
+                    <div class="reports-list">
+
+
+                        <!-- Report 1 -->
+
+                        <div class="report-row">
+
+                            <div class="report-category road">
+                                🚧
+                            </div>
+
+                            <div class="report-details">
+
+                                <h3>
+                                    Road damage near Unit 4
+                                </h3>
+
+                                <p>
+                                    #JS-20481 • 2 days ago
+                                </p>
+
+                            </div>
+
+                            <div class="report-status">
+
+                                <span class="status in-progress">
+                                    In Progress
+                                </span>
+
+                            </div>
+
+                            <button
+                                class="arrow-btn"
+                                onclick="viewReport('JS-20481')"
+                            >
+                                →
+                            </button>
+
+                        </div>
+
+
+                        <!-- Report 2 -->
+
+                        <div class="report-row">
+
+                            <div class="report-category light">
+                                💡
+                            </div>
+
+                            <div class="report-details">
+
+                                <h3>
+                                    Broken street light
+                                </h3>
+
+                                <p>
+                                    #JS-20462 • 5 days ago
+                                </p>
+
+                            </div>
+
+                            <div class="report-status">
+
+                                <span class="status resolved">
+                                    Resolved
+                                </span>
+
+                            </div>
+
+                            <button
+                                class="arrow-btn"
+                                onclick="viewReport('JS-20462')"
+                            >
+                                →
+                            </button>
+
+                        </div>
+
+
+                        <!-- Report 3 -->
+
+                        <div class="report-row">
+
+                            <div class="report-category waste">
+                                🗑
+                            </div>
+
+                            <div class="report-details">
+
+                                <h3>
+                                    Garbage collection issue
+                                </h3>
+
+                                <p>
+                                    #JS-20431 • 1 week ago
+                                </p>
+
+                            </div>
+
+                            <div class="report-status">
+
+                                <span class="status pending">
+                                    Pending
+                                </span>
+
+                            </div>
+
+                            <button
+                                class="arrow-btn"
+                                onclick="viewReport('JS-20431')"
+                            >
+                                →
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- Quick actions -->
+
+                <div class="card quick-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Quick Actions
+                            </h2>
+
+                            <p>
+                                Get things done faster
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+
+                        <a
+                            href="report.html"
+                            class="quick-action"
+                        >
+
+                            <div class="quick-icon blue">
+                                ＋
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Report an issue
+                                </strong>
+
+                                <span>
+                                    Submit a new grievance
+                                </span>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </a>
+
+
+                        <button
+                            class="quick-action"
+                            onclick="showSection('map')"
+                        >
+
+                            <div class="quick-icon green">
+                                ⌖
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Explore civic map
+                                </strong>
+
+                                <span>
+                                    See issues near you
+                                </span>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            onclick="showSection('budget')"
+                        >
+
+                            <div class="quick-icon purple">
+                                ₹
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Vote on projects
+                                </strong>
+
+                                <span>
+                                    Participate in your ward
+                                </span>
+
+                            </div>
+
+                            <span>
+                                →
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                    <!-- Ward 12 Civic Leaderboard Card (Gamification) -->
+                    <div class="card" style="margin-top: 16px; padding: 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="font-size: 16px;">🏆</span>
+                                <h3 style="font-size: 13px; font-weight: 700; color: #0f172a; margin: 0;">Ward 12 Leaderboard</h3>
+                            </div>
+                            <span style="font-size: 10px; font-weight: 700; background: #fef3c7; color: #b45309; padding: 2px 7px; border-radius: 4px;">Top Guardians</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; background: #eff6ff; border-radius: 8px; border: 1px solid #bfdbfe;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 15px;">🥇</span>
+                                    <div>
+                                        <strong style="font-size: 12px; color: #1e3a8a;" id="leaderboardSelfName">Sourav P. (You)</strong>
+                                        <span style="font-size: 10px; color: #3b82f6; display: block;">Ward Guardian • Lvl 3</span>
+                                    </div>
+                                </div>
+                                <strong style="font-size: 12px; color: #2563eb;" id="leaderboardSelfScore">340 XP</strong>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 15px;">🥈</span>
+                                    <div>
+                                        <strong style="font-size: 12px; color: #334155;">Ananya Mishra</strong>
+                                        <span style="font-size: 10px; color: #64748b; display: block;">Civic Champion • Lvl 3</span>
+                                    </div>
+                                </div>
+                                <strong style="font-size: 12px; color: #475569;">315 XP</strong>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 15px;">🥉</span>
+                                    <div>
+                                        <strong style="font-size: 12px; color: #334155;">Rakesh Kumar</strong>
+                                        <span style="font-size: 10px; color: #64748b; display: block;">Active Corroborator</span>
+                                    </div>
+                                </div>
+                                <strong style="font-size: 12px; color: #475569;">280 XP</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 IMPACT + MAP
+            ================================== -->
+
+            <div class="lower-grid">
+
+
+                <!-- Community impact -->
+
+                <div
+                    class="card impact-card"
+                    id="impact"
+                >
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Community Impact
+                            </h2>
+
+                            <p>
+                                Your contribution matters
+                            </p>
+
+                        </div>
+
+                        <span class="impact-badge">
+                            This month
+                        </span>
+
+                    </div>
+
+
+                    <div class="impact-content">
+
+                        <div class="impact-number">
+
+                            <strong>
+                                17
+                            </strong>
+
+                            <span>
+                                citizens benefited
+                            </span>
+
+                        </div>
+
+
+                        <div class="impact-bar">
+
+                            <div class="bar-label">
+
+                                <span>
+                                    Your civic contribution
+                                </span>
+
+                                <strong>
+                                    72%
+                                </strong>
+
+                            </div>
+
+                            <div class="progress-bar">
+
+                                <div
+                                    class="progress-value"
+                                    style="width:72%"
+                                >
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <p class="impact-message">
+
+                            Together, citizens in your area have
+                            helped improve <strong>23 local issues</strong>
+                            this month.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Civic map -->
+
+                <div
+                    class="card map-card"
+                    id="map"
+                >
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Civic Map
+                            </h2>
+
+                            <p>
+                                Live geospatial complaints in your jurisdiction
+                            </p>
+
+                        </div>
+
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span style="background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; border: 1px solid #bfdbfe; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>🗺️</span> Google Maps
+                            </span>
+                            <button
+                                class="text-btn"
+                                onclick="if (citizenMapHandle && citizenMapHandle.engine === 'leaflet') { citizenMapHandle.map.setView([20.2961, 85.8245], 14); } else if (citizenMapHandle && citizenMapHandle.engine === 'google') { citizenMapHandle.map.setCenter({lat: 20.2961, lng: 85.8245}); citizenMapHandle.map.setZoom(14); }"
+                            >
+                                Reset View ⌖
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Live Leaflet Map -->
+                    <div id="citizenLeafletMap" style="height: 320px; width: 100%; border-radius: 12px; margin-top: 12px; z-index: 1;"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 BUDGET
+            ================================== -->
+
+            <div
+                class="card budget-card"
+                id="budget"
+            >
+
+                <div class="budget-content">
+
+                    <div class="budget-icon">
+                        ₹
+                    </div>
+
+                    <div class="budget-info">
+
+                        <span class="eyebrow">
+                            PARTICIPATORY BUDGETING
+                        </span>
+
+                        <h2>
+                            Help decide what gets built in your ward.
+                        </h2>
+
+                        <p>
+                            Review community proposals and vote for
+                            projects that can make the biggest local impact.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="primary-btn"
+                        onclick="showBudget()"
+                    >
+                        Explore proposals →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================
+             PARTICIPATORY BUDGETING SECTION
+        ================================== -->
+
+        <section
+            class="dashboard-section hidden-section"
+            id="budgetSection"
+        >
+
+            <div class="page-heading">
+
+                <span class="eyebrow">
+                    CIVIC PARTICIPATION
+                </span>
+
+                <h1>
+                    Participatory Budgeting
+                </h1>
+
+                <p>
+                    Vote on municipal fund allocations for local infrastructure projects in Ward 12.
+                </p>
+
+            </div>
+
+            <div
+                class="budget-grid"
+                id="budgetProjectsGrid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 20px;"
+            >
+                <!-- Dynamically filled with project cards and voting buttons -->
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             NOTIFICATIONS
+        ================================== -->
+
+        <section
+            class="dashboard-section hidden-section"
+            id="notifications"
+        >
+
+            <div class="page-heading">
+
+                <span class="eyebrow">
+                    UPDATES
+                </span>
+
+                <h1>
+                    Notifications
+                </h1>
+
+                <p>
+                    Stay updated about your civic reports.
+                </p>
+
+            </div>
+
+
+            <div class="card notifications-card">
+
+                <div class="notification-item unread">
+
+                    <div class="notification-icon green">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Your street light complaint was resolved.
+                        </strong>
+
+                        <p>
+                            Report #JS-20462 has been marked as resolved.
+                        </p>
+
+                        <small>
+                            2 hours ago
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification-item unread">
+
+                    <div class="notification-icon blue">
+                        ↻
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Your road complaint is being reviewed.
+                        </strong>
+
+                        <p>
+                            An officer has started working on #JS-20481.
+                        </p>
+
+                        <small>
+                            Yesterday
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification-item">
+
+                    <div class="notification-icon purple">
+                        ₹
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            New budget proposals are available.
+                        </strong>
+
+                        <p>
+                            Your ward has 5 proposals open for voting.
+                        </p>
+
+                        <small>
+                            2 days ago
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             FULL REPORTS
+        ================================== -->
+
+        <section
+            class="dashboard-section hidden-section"
+            id="allReports"
+        >
+
+            <div class="page-heading">
+
+                <span class="eyebrow">
+                    MY ACTIVITY
+                </span>
+
+                <h1>
+                    My Reports
+                </h1>
+
+                <p>
+                    Track all your submitted civic grievances.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="filter-row">
+
+                    <button
+                        class="filter-btn active"
+                        onclick="filterReports('all', this)"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        onclick="filterReports('pending', this)"
+                    >
+                        Pending
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        onclick="filterReports('progress', this)"
+                    >
+                        In Progress
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        onclick="filterReports('resolved', this)"
+                    >
+                        Resolved
+                    </button>
+
+                </div>
+
+
+                <div id="allReportsList">
+
+                    <div
+                        class="full-report"
+                        data-status="progress"
+                    >
+
+                        <div class="full-report-icon road">
+                            🚧
+                        </div>
+
+                        <div class="full-report-info">
+
+                            <h3>
+                                Road damage near Unit 4
+                            </h3>
+
+                            <p>
+                                #JS-20481 • Road & Infrastructure
+                            </p>
+
+                        </div>
+
+                        <span class="status in-progress">
+                            In Progress
+                        </span>
+
+                        <button
+                            class="outline-btn"
+                            onclick="viewReport('JS-20481')"
+                        >
+                            Track
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="full-report"
+                        data-status="resolved"
+                    >
+
+                        <div class="full-report-icon light">
+                            💡
+                        </div>
+
+                        <div class="full-report-info">
+
+                            <h3>
+                                Broken street light
+                            </h3>
+
+                            <p>
+                                #JS-20462 • Street Lighting
+                            </p>
+
+                        </div>
+
+                        <span class="status resolved">
+                            Resolved
+                        </span>
+
+                        <button
+                            class="outline-btn"
+                            onclick="viewReport('JS-20462')"
+                        >
+                            View
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="full-report"
+                        data-status="pending"
+                    >
+
+                        <div class="full-report-icon waste">
+                            🗑
+                        </div>
+
+                        <div class="full-report-info">
+
+                            <h3>
+                                Garbage collection issue
+                            </h3>
+
+                            <p>
+                                #JS-20431 • Waste Management
+                            </p>
+
+                        </div>
+
+                        <span class="status pending">
+                            Pending
+                        </span>
+
+                        <button
+                            class="outline-btn"
+                            onclick="viewReport('JS-20431')"
+                        >
+                            Track
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =========================================
+         REPORT DETAILS MODAL
+    ========================================== -->
+
+    <div
+        class="detail-modal"
+        id="detailModal"
+    >
+
+        <div class="detail-box">
+
+            <button
+                class="modal-close"
+                onclick="closeDetails()"
+            >
+                ×
+            </button>
+
+
+            <span class="eyebrow">
+                REPORT DETAILS
+            </span>
+
+            <h2 id="detailTitle">
+                Road damage near Unit 4
+            </h2>
+
+            <p
+                class="detail-id"
+                id="detailId"
+            >
+                #JS-20481
+            </p>
+
+
+            <div class="timeline">
+
+                <div class="timeline-item completed">
+
+                    <span>
+                        ✓
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Report Submitted
+                        </strong>
+
+                        <p>
+                            Your complaint was received.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item completed">
+
+                    <span>
+                        ✓
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            AI Triage Completed
+                        </strong>
+
+                        <p>
+                            Issue classified and routed.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item active">
+
+                    <span>
+                        ●
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Department Review
+                        </strong>
+
+                        <p>
+                            Assigned officer is reviewing the issue.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="timeline-item">
+
+                    <span>
+                        ○
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Resolution
+                        </strong>
+
+                        <p id="modalResolutionTimelineText">
+                            Awaiting resolution evidence.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Concerned Authorities & Contractor Details -->
+            <div id="modalAuthoritySection" style="margin: 16px 0; padding: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;">
+                <div style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                    <span>🏛️</span> Assigned Authorities & Contractor
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
+                    <div>
+                        <span style="color: #64748b; font-size: 11px; display: block;">Nodal Officer:</span>
+                        <strong id="modalOfficerName" style="color: #0f172a;">Er. Rajesh Mohapatra (EE)</strong>
+                        <small id="modalOfficerContact" style="color: #2563eb; display: block; word-break: break-all;">✉️ <a href="mailto:rajesh.mohapatra@bmc.gov.in" style="color: #2563eb; text-decoration: underline;">rajesh.mohapatra@bmc.gov.in</a></small>
+                    </div>
+                    <div>
+                        <span style="color: #64748b; font-size: 11px; display: block;">Contractor / Agency:</span>
+                        <strong id="modalContractorName" style="color: #0f172a;">Apex Civic Infra Ltd.</strong>
+                        <small id="modalWorkOrderId" style="color: #16a34a; display: block;">Order #WO-2026-881</small>
+                    </div>
+                </div>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed #cbd5e1; font-size: 11px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>🗳️ <strong>Ward Councillor:</strong> <span id="modalCouncillorName">Smt. Jayashree Das (Ward 12)</span></span>
+                    <span style="color: #ea580c; font-weight: 600;">SLA: <span id="modalSlaTarget">24 Hours</span></span>
+                </div>
+            </div>
+
+            <!-- Official Resolution Evidence (Before & After) -->
+            <div id="modalEvidenceProofSection" style="margin: 16px 0; padding: 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 11px; font-weight: 700; color: #166534; text-transform: uppercase;">📸 Resolution Proof Evidence</span>
+                    <span id="modalProofBadge" class="status resolved" style="font-size: 10px; padding: 2px 8px;">Official Proof Verified ✓</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <span style="font-size: 11px; color: #64748b; display: block; margin-bottom: 4px;">Before (Initial Report):</span>
+                        <img id="modalBeforeImg" src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=400" alt="Before" style="width: 100%; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1;">
+                    </div>
+                    <div>
+                        <span style="font-size: 11px; color: #166534; font-weight: 600; display: block; margin-bottom: 4px;">After (Completed Fix):</span>
+                        <img id="modalAfterImg" src="https://images.unsplash.com/photo-1590496793929-36417d3117de?w=400" alt="After" style="width: 100%; height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid #86efac;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Citizen Community Reviews & Verification (Amazon Style) -->
+            <div id="modalReviewsSection" style="margin: 16px 0; padding: 14px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div>
+                        <h4 style="font-size: 13px; font-weight: 700; color: #0f172a; margin: 0;">Citizen Reviews & Verification</h4>
+                        <span id="modalReviewStats" style="font-size: 11px; color: #64748b;">⭐⭐⭐⭐⭐ 4.8 / 5 Rating</span>
+                    </div>
+                    <button type="button" onclick="toggleCitizenReviewForm()" style="background: #2563eb; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 12px; border: none; border-radius: 6px; cursor: pointer;">
+                        + Write Review
+                    </button>
+                </div>
+
+                <!-- Review Form -->
+                <div id="citizenReviewFormBox" style="display: none; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 12px;">
+                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
+                        <select id="citizenReviewRating" style="padding: 4px 8px; border-radius: 6px; font-size: 11px; border: 1px solid #cbd5e1;">
+                            <option value="5">⭐⭐⭐⭐⭐ (5 - Perfect Fix)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 - Good)</option>
+                            <option value="3">⭐⭐⭐ (3 - Acceptable)</option>
+                            <option value="2">⭐⭐ (2 - Substandard)</option>
+                            <option value="1">⭐ (1 - Still Broken)</option>
+                        </select>
+                        <select id="citizenReviewVerified" style="padding: 4px 8px; border-radius: 6px; font-size: 11px; border: 1px solid #cbd5e1;">
+                            <option value="1">✅ Confirmed Fixed</option>
+                            <option value="0">❌ Still Broken / Dispute</option>
+                        </select>
+                    </div>
+                    <textarea id="citizenReviewComment" rows="2" placeholder="Share your on-ground feedback and verification details..." style="width: 100%; padding: 6px 10px; font-size: 11px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; margin-bottom: 8px; box-sizing: border-box;"></textarea>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <label style="font-size: 11px; color: #2563eb; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                            <span>📸 Attach Photo Proof</span>
+                            <input type="file" id="citizenReviewPhoto" accept="image/*" style="display: none;" onchange="handleReviewPhotoSelected(this)">
+                        </label>
+                        <span id="citizenReviewPhotoLabel" style="font-size: 10px; color: #16a34a; font-weight: 600;"></span>
+                        <div style="display: flex; gap: 6px;">
+                            <button type="button" onclick="toggleCitizenReviewForm()" style="padding: 4px 10px; font-size: 11px; font-weight: 600; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer;">
+                                Cancel
+                            </button>
+                            <button type="button" onclick="submitCurrentCitizenReview()" style="padding: 4px 14px; font-size: 11px; font-weight: 700; background: #16a34a; color: #fff; border: none; border-radius: 6px; cursor: pointer;">
+                                Post Review
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Feed -->
+                <div id="modalReviewsList" style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Dynamically populated review cards -->
+                </div>
+            </div>
+
+            <!-- Modal Issue Voting & Community Impact -->
+            <div style="margin: 16px 0; padding: 12px 16px; background: #eff6ff; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #bfdbfe;">
+                <div>
+                    <span style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700; display: block;">Community Corroboration</span>
+                    <strong id="modalImpactCount" style="font-size: 15px; color: #1e3a8a;">17 Votes</strong>
+                </div>
+                <button id="modalSupportBtn" class="primary-btn" onclick="supportCurrentModalGrievance()" style="padding: 8px 16px; font-size: 13px; font-weight: 700; background: #2563eb; color: #fff; border: none; border-radius: 6px; cursor: pointer;">
+                    ▲ Upvote Issue (+1)
+            </div>
+
+            <!-- Action Bar: Download PDF Receipt & Voice Status -->
+            <div style="margin: 16px 0; display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px;">
+                <button type="button" onclick="handleDownloadCurrentReceipt()" style="padding: 9px 12px; background: #f8fafc; color: #0284c7; border: 1px solid #bae6fd; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <span>📥</span> PDF Receipt
+                </button>
+                <div style="display: flex; gap: 4px;">
+                    <select id="modalVoiceLangSelect" style="padding: 8px; border-radius: 8px 0 0 8px; border: 1px solid #cbd5e1; border-right: none; font-size: 11px; background: #fff;">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी (Hindi)</option>
+                        <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                        <option value="bn">বাংলা (Bengali)</option>
+                        <option value="ta">தமிழ் (Tamil)</option>
+                        <option value="te">తెలుగు (Telugu)</option>
+                        <option value="mr">मराठी (Marathi)</option>
+                        <option value="gu">ગુજરાતી (Gujarati)</option>
+                        <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                    </select>
+                    <button type="button" id="modalVoiceListenBtn" onclick="handleVoiceReadoutModal()" style="flex: 1; padding: 8px 10px; background: #10b981; color: #fff; border: 1px solid #10b981; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        <span>🔊</span> Listen
+                    </button>
+                    <button type="button" onclick="handleStopVoiceModal()" title="Stop Audio" style="padding: 8px 10px; background: #ef4444; color: #fff; border: 1px solid #ef4444; border-radius: 0 8px 8px 0; font-size: 11px; font-weight: 700; cursor: pointer;">
+                        ⏹
+                    </button>
+                </div>
+            </div>
+
+            <!-- Voice Speed & Equalizer Bar -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 10px; font-size: 11px;">
+                <span style="color: #64748b; font-weight: 600;">Speed:</span>
+                <div style="display: flex; gap: 4px;">
+                    <button type="button" class="voice-spd-btn" onclick="setVoiceSpeed(0.75, this)" style="padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; font-size: 10px; cursor: pointer;">0.75x</button>
+                    <button type="button" class="voice-spd-btn active" onclick="setVoiceSpeed(1.0, this)" style="padding: 2px 6px; border: 1px solid #10b981; border-radius: 4px; background: #10b981; color: #fff; font-size: 10px; cursor: pointer; font-weight: bold;">1.0x</button>
+                    <button type="button" class="voice-spd-btn" onclick="setVoiceSpeed(1.25, this)" style="padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; font-size: 10px; cursor: pointer;">1.25x</button>
+                    <button type="button" class="voice-spd-btn" onclick="setVoiceSpeed(1.5, this)" style="padding: 2px 6px; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; font-size: 10px; cursor: pointer;">1.5x</button>
+                </div>
+            </div>
+            
+            <!-- Live Voice Translation Transcript -->
+            <div id="modalVoiceTranscript" style="display: none; margin-bottom: 14px; padding: 10px 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 11px; color: #166534; line-height: 1.4;">
+                <!-- Translated spoken text shown here -->
+            </div>
+
+            <!-- WhatsApp Live Updates Subscription Box -->
+            <div style="margin-bottom: 14px; padding: 10px 14px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 18px;">📱</span>
+                    <div>
+                        <strong style="font-size: 11px; color: #14532d; display: block;">WhatsApp Live Progress Alerts</strong>
+                        <span style="font-size: 10px; color: #166534;">Receive dispatch & photo verification updates</span>
+                    </div>
+                </div>
+                <button type="button" id="modalWhatsAppSubscribeBtn" onclick="toggleWhatsAppSubscription()" style="padding: 4px 10px; background: #25D366; color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                    ✓ Subscribed
+                </button>
+            </div>
+
+            <button
+                class="primary-btn full-width"
+                onclick="closeDetails()"
+            >
+                Done
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================
+         MY CIVIC PROFILE & KARMA MODAL
+    ========================================== -->
+    <div class="modal" id="profileModal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+        <div class="modal-content" style="background: #ffffff; border-radius: 16px; width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); padding: 24px; position: relative;">
+            
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="background: #eff6ff; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                        👤
+                    </div>
+                    <div>
+                        <h2 style="font-size: 17px; font-weight: 800; color: #0f172a; margin: 0;">My Civic Profile</h2>
+                        <span style="font-size: 11px; color: #64748b;">JanSetu Verified Citizen & Municipal Contributor</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closeProfileModal()" style="background: #f1f5f9; border: none; font-size: 18px; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; color: #64748b;">✕</button>
+            </div>
+
+            <!-- Citizen Verification & Level Card -->
+            <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); border-radius: 12px; padding: 16px; color: #ffffff; margin-bottom: 18px; position: relative; overflow: hidden;">
+                <div style="display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="avatar large" style="background: #ffffff; color: #1e3a8a; font-weight: 800; font-size: 22px; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            C
+                        </div>
+                        <div>
+                            <strong id="modalProfileCitizenName" style="font-size: 16px; display: block;">Citizen (Sourav P.)</strong>
+                            <span style="font-size: 11px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 12px; display: inline-block; margin-top: 2px;">✓ Verified Resident • Ward 12 (Bhubaneswar)</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 11px; opacity: 0.9; text-transform: uppercase; font-weight: 700; display: block;">Civic Karma</span>
+                        <strong style="font-size: 22px; color: #fef08a;" id="modalProfileKarma">340 XP</strong>
+                    </div>
+                </div>
+
+                <!-- XP Bar -->
+                <div style="margin-top: 14px; position: relative; z-index: 1;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; opacity: 0.95;">
+                        <span>Rank: <strong>Ward Guardian (Level 3)</strong></span>
+                        <span>160 XP to Level 4</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.25); border-radius: 6px; height: 6px; overflow: hidden;">
+                        <div style="background: #fef08a; height: 100%; width: 68%; border-radius: 6px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Civic Badges Showcase -->
+            <div style="margin-bottom: 18px;">
+                <h4 style="font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 0 0 8px;">Earned Civic Badges</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                    <div style="padding: 8px 10px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">🌟</span>
+                        <div>
+                            <strong style="font-size: 11px; color: #14532d; display: block;">Civic Champion</strong>
+                            <span style="font-size: 10px; color: #166534;">Filed 5+ verified complaints</span>
+                        </div>
+                    </div>
+                    <div style="padding: 8px 10px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">🔍</span>
+                        <div>
+                            <strong style="font-size: 11px; color: #1e3a8a; display: block;">Verified Corroborator</strong>
+                            <span style="font-size: 10px; color: #2563eb;">10+ community upvotes given</span>
+                        </div>
+                    </div>
+                    <div style="padding: 8px 10px; background: #fefce8; border: 1px solid #fde047; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">⚡</span>
+                        <div>
+                            <strong style="font-size: 11px; color: #854d0e; display: block;">Fast Reporter Streak</strong>
+                            <span style="font-size: 10px; color: #a16207;">Active 3 days in a row 🔥</span>
+                        </div>
+                    </div>
+                    <div style="padding: 8px 10px; background: #fdf2f8; border: 1px solid #fbcfe8; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">🌳</span>
+                        <div>
+                            <strong style="font-size: 11px; color: #9d174d; display: block;">Green Ward Contributor</strong>
+                            <span style="font-size: 10px; color: #be185d;">Sanitation & cleanliness focus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Details & Editable Preferences -->
+            <div style="margin-bottom: 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px;">
+                <h4 style="font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; margin: 0 0 10px;">Personal & Ward Settings</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size: 11px; font-weight: 600; color: #64748b; display: block; margin-bottom: 4px;">Full Name</label>
+                        <input type="text" id="profileInputName" value="Citizen Sourav" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="font-size: 11px; font-weight: 600; color: #64748b; display: block; margin-bottom: 4px;">Mobile Phone</label>
+                        <input type="text" id="profileInputPhone" value="+91 98765 43210" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label style="font-size: 11px; font-weight: 600; color: #64748b; display: block; margin-bottom: 4px;">Registered Ward</label>
+                        <select id="profileInputWard" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; background: #fff; box-sizing: border-box;">
+                            <option value="Ward 12">Ward 12 (Saheed Nagar / Unit 4)</option>
+                            <option value="Ward 6">Ward 6 (Patia / Infocity)</option>
+                            <option value="Ward 8">Ward 8 (Nayapalli / IRC Village)</option>
+                            <option value="Ward 10">Ward 10 (Rasulgarh / Vani Vihar)</option>
+                            <option value="Ward 15">Ward 15 (Khandagiri / Baramunda)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 11px; font-weight: 600; color: #64748b; display: block; margin-bottom: 4px;">Default Language</label>
+                        <select id="profileInputLang" onchange="changeDashboardLanguage(this.value)" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 12px; background: #fff; box-sizing: border-box;">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी (Hindi)</option>
+                            <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                            <option value="bn">বাংলা (Bengali)</option>
+                            <option value="ta">தமிழ் (Tamil)</option>
+                            <option value="te">తెలుగు (Telugu)</option>
+                            <option value="mr">मराठी (Marathi)</option>
+                            <option value="gu">ગુજરાતી (Gujarati)</option>
+                            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Notification Alert Toggles -->
+                <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <label style="font-size: 11px; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="checkbox" id="profileNotifyWhatsApp" checked> 📱 WhatsApp Live Alerts
+                    </label>
+                    <label style="font-size: 11px; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="checkbox" id="profileNotifySMS" checked> ✉️ SMS Emergency Alerts
+                    </label>
+                    <label style="font-size: 11px; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="checkbox" id="profileNotifyEmail" checked> 📬 Weekly Digest
+                    </label>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 10px;">
+                <button type="button" onclick="saveProfileChanges()" style="flex: 1; padding: 10px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;">
+                    💾 Save Profile Changes
+                </button>
+                <button type="button" onclick="closeProfileModal()" style="padding: 10px 18px; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =========================================
+         TOAST
+    ========================================== -->
+
+    <div
+        class="dashboard-toast"
+        id="dashboardToast"
+    >
+
+        <span>
+            ✓
+        </span>
+
+        <p id="dashboardToastMessage">
+            Success
+        </p>
+
+    </div>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="maps-adapter.js"></script>
+    <script src="api.js"></script>
+    <script src="pdf-generator.js"></script>
+    <script src="whatsapp-bot.js"></script>
+    <script src="dashboard.js"></script>
+
+</body>
+
+</html>

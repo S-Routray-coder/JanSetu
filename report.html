@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="JanSetu - Multilingual Civic Grievance Reporting">
+
+    <title>JanSetu | Report Civic Issue</title>
+
+    <link rel="stylesheet" href="report.css">
+    <!-- Leaflet CSS Fallback -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     BACKGROUND DECORATION
+===================================================== -->
+
+<div class="background-decoration decoration-one"></div>
+
+<div class="background-decoration decoration-two"></div>
+
+<div class="background-decoration decoration-three"></div>
+
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="navbar-inner">
+
+
+        <!-- LOGO -->
+
+        <a href="index.html"
+           class="brand">
+
+            <div class="brand-logo">
+
+                <span>JS</span>
+
+            </div>
+
+            <div class="brand-text">
+
+                <h2>JanSetu</h2>
+
+                <span data-i18n="citizenFirst">
+                    Citizen First
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- NAV RIGHT -->
+
+        <div class="nav-actions">
+
+
+            <!-- SECURE -->
+
+            <div class="secure-badge">
+
+                <span class="secure-icon">
+                    🔒
+                </span>
+
+                <span data-i18n="secure">
+                    Your report is secure
+                </span>
+
+            </div>
+
+
+
+            <!-- LANGUAGE -->
+
+            <div class="language-wrapper">
+
+                <span class="language-symbol">
+                    🌐
+                </span>
+
+                <select id="languageSelector"
+                        aria-label="Select language">
+
+                    <option value="en">
+                        English
+                    </option>
+
+                    <option value="hi">
+                        हिन्दी
+                    </option>
+
+                    <option value="or">
+                        ଓଡ଼ିଆ
+                    </option>
+
+                    <option value="bn">
+                        বাংলা
+                    </option>
+
+                    <option value="te">
+                        తెలుగు
+                    </option>
+
+                    <option value="ta">
+                        தமிழ்
+                    </option>
+
+                    <option value="mr">
+                        मराठी
+                    </option>
+
+                    <option value="gu">
+                        ગુજરાતી
+                    </option>
+
+                    <option value="kn">
+                        ಕನ್ನಡ
+                    </option>
+
+                    <option value="ml">
+                        മലയാളം
+                    </option>
+
+                    <option value="pa">
+                        ਪੰਜਾਬੀ
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- DASHBOARD -->
+
+            <a href="citizendashboard.html"
+               class="dashboard-btn">
+
+                <span>←</span>
+
+                <span data-i18n="dashboard">
+                    Dashboard
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main-container">
+
+
+    <!-- =================================================
+         TOP INFORMATION
+    ================================================== -->
+
+    <div class="top-info">
+
+        <div>
+
+            <div class="page-label">
+
+                <span class="label-dot"></span>
+
+                <span data-i18n="reportIssue">
+                    Report Civic Issue
+                </span>
+
+            </div>
+
+            <h1 data-i18n="pageTitle">
+                Help improve your community
+            </h1>
+
+            <p data-i18n="pageSubtitle">
+                Tell us about a civic problem and help your
+                local administration make your community better.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         STEPPER
+    ================================================== -->
+
+    <div class="stepper-container">
+
+        <div class="stepper-line"></div>
+
+
+        <!-- STEP 1 -->
+
+        <div class="step active">
+
+            <div class="step-circle">
+                1
+            </div>
+
+            <span data-i18n="describe">
+                Describe
+            </span>
+
+        </div>
+
+
+        <!-- STEP 2 -->
+
+        <div class="step">
+
+            <div class="step-circle">
+                2
+            </div>
+
+            <span data-i18n="evidence">
+                Evidence
+            </span>
+
+        </div>
+
+
+        <!-- STEP 3 -->
+
+        <div class="step">
+
+            <div class="step-circle">
+                3
+            </div>
+
+            <span data-i18n="location">
+                Location
+            </span>
+
+        </div>
+
+
+        <!-- STEP 4 -->
+
+        <div class="step">
+
+            <div class="step-circle">
+                4
+            </div>
+
+            <span data-i18n="aiAnalysis">
+                AI Analysis
+            </span>
+
+        </div>
+
+
+        <!-- STEP 5 -->
+
+        <div class="step">
+
+            <div class="step-circle">
+                5
+            </div>
+
+            <span data-i18n="review">
+                Review
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         REPORT CARD
+    ================================================== -->
+
+    <section class="report-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="card-header">
+
+            <div class="header-icon">
+                💬
+            </div>
+
+            <div>
+
+                <h2 data-i18n="problemTitle">
+                    What is the problem?
+                </h2>
+
+                <p data-i18n="problemDescription">
+                    Describe the issue in your own words.
+                    You can write in your preferred language.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CATEGORY
+        ================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-title">
+
+                <span data-i18n="issueCategory">
+                    Issue category
+                </span>
+
+                <span class="required">*</span>
+
+            </div>
+
+
+            <div class="category-grid">
+
+
+                <!-- HEALTH -->
+
+                <button class="category-card"
+                        type="button"
+                        data-category="health">
+
+                    <div class="category-icon health-icon">
+                        🏥
+                    </div>
+
+                    <span data-i18n="health">
+                        Health
+                    </span>
+
+                </button>
+
+
+
+                <!-- WATER -->
+
+                <button class="category-card"
+                        type="button"
+                        data-category="water">
+
+                    <div class="category-icon water-icon">
+                        💧
+                    </div>
+
+                    <span data-i18n="water">
+                        Water
+                    </span>
+
+                </button>
+
+
+
+                <!-- WASTE -->
+
+                <button class="category-card"
+                        type="button"
+                        data-category="waste">
+
+                    <div class="category-icon waste-icon">
+                        🗑️
+                    </div>
+
+                    <span data-i18n="waste">
+                        Waste
+                    </span>
+
+                </button>
+
+
+
+                <!-- STREET LIGHT -->
+
+                <button class="category-card"
+                        type="button"
+                        data-category="street">
+
+                    <div class="category-icon light-icon">
+                        💡
+                    </div>
+
+                    <span data-i18n="streetLights">
+                        Street Lights
+                    </span>
+
+                </button>
+
+
+
+                <!-- DRAINAGE -->
+
+                <button class="category-card"
+                        type="button"
+                        data-category="drainage">
+
+                    <div class="category-icon drainage-icon">
+                        ≋
+                    </div>
+
+                    <span data-i18n="drainage">
+                        Drainage
+                    </span>
+
+                </button>
+
+
+
+                <!-- OTHER -->
+
+                <button class="category-card"
+                        type="button"
+                        data-category="other">
+
+                    <div class="category-icon other-icon">
+                        •••
+                    </div>
+
+                    <span data-i18n="other">
+                        Other
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             DESCRIPTION
+        ================================================== -->
+
+        <div class="form-section">
+
+
+            <div class="section-title">
+
+                <span data-i18n="describeIssue">
+                    Describe the issue
+                </span>
+
+                <span class="required">*</span>
+
+            </div>
+
+
+            <div class="textarea-wrapper">
+
+                <textarea
+                    id="issueDescription"
+                    maxlength="500"
+                    data-placeholder="descriptionPlaceholder"
+                    placeholder="Example: There is a large pothole near the main entrance of Unit 4 Market..."
+                ></textarea>
+
+
+                <!-- VOICE -->
+
+                <button type="button"
+                        id="voiceButton"
+                        class="voice-btn">
+
+                    <span class="voice-icon">
+                        🎙
+                    </span>
+
+                    <span data-i18n="voice">
+                        Voice
+                    </span>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- COUNTER -->
+
+            <div class="textarea-footer">
+
+                <div class="language-support">
+
+                    <span>🌐</span>
+
+                    <span data-i18n="languageSupport">
+                        Supports multiple Indian languages
+                    </span>
+
+                </div>
+
+
+                <div class="character-counter">
+
+                    <span id="characterCount">
+                        0
+                    </span>
+
+                    /500
+
+                </div>
+
+            </div>
+
+
+
+            <!-- AI INFO -->
+
+            <div class="ai-info">
+
+                <div class="ai-info-icon">
+                    ✨
+                </div>
+
+                <div>
+
+                    <strong data-i18n="aiTitle">
+                        AI-powered assistance
+                    </strong>
+
+                    <p data-i18n="aiDescription">
+                        JanSetu AI will analyze your description,
+                        identify the issue type, detect similar
+                        complaints and suggest the appropriate
+                        department.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             EVIDENCE / PHOTO ATTACHMENT
+        ================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-title">
+                <span>Attach Photo Evidence</span>
+                <small style="color: #64748b; font-size: 0.85rem; font-weight: normal; margin-left: 8px;">(Optional — Accelerates resolution verification)</small>
+            </div>
+
+            <div id="evidenceDropZone" style="border: 2px dashed #cbd5e1; border-radius: 12px; padding: 22px; text-align: center; background: #f8fafc; cursor: pointer; transition: all 0.2s ease;">
+                <input type="file" id="evidenceFileInput" accept="image/*,video/*,.pdf" capture="environment" style="display: none;">
+                <div id="uploadPrompt">
+                    <div style="font-size: 2rem; margin-bottom: 6px;">📸</div>
+                    <strong style="color: #1e293b; display: block; font-size: 0.95rem;">Click to upload or drag & drop photo</strong>
+                    <p style="color: #64748b; font-size: 0.82rem; margin-top: 4px;">Supports JPG, PNG, WEBP from camera or gallery</p>
+                </div>
+                <div id="evidencePreviewContainer" style="display: none; align-items: center; justify-content: center; gap: 16px;">
+                    <img id="evidencePreviewImg" src="" alt="Evidence Preview" style="max-height: 130px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                    <div style="text-align: left;">
+                        <span id="evidenceFileName" style="font-weight: 600; font-size: 0.9rem; color: #1e293b; display: block;"></span>
+                        <span id="evidenceFileSize" style="font-size: 0.8rem; color: #64748b; display: block; margin-top: 2px;"></span>
+                        <button type="button" id="removeEvidenceBtn" style="margin-top: 8px; background: #fee2e2; color: #dc2626; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">Remove Photo ×</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOCATION & MAP PINNING (AI AUTO-DETECT + MANUAL PINNING)
+        ================================================== -->
+
+        <div class="form-section">
+
+            <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span>Location & Landmark</span>
+                    <span class="required">*</span>
+                </div>
+                <button type="button" id="detectGpsBtn" style="background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                    <span>📍</span> Detect GPS Location
+                </button>
+            </div>
+
+            <!-- AI Auto-Detected Location Banner -->
+            <div id="aiLocationBadge" style="display: none; margin-top: 8px; padding: 8px 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 0.82rem; color: #166534; display: flex; align-items: center; gap: 6px;">
+                <span>✨</span>
+                <span>AI Auto-Detected: <strong id="aiDetectedLocationText">Unit 4 Market</strong></span>
+            </div>
+
+            <div style="margin-top: 8px;">
+                <input type="text" id="issueLocation" placeholder="e.g. Near Unit 4 Market Gate, Saheed Nagar, Ward 12" style="width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; font-family: inherit;">
+                
+                <!-- Quick Landmark Chips for Manual Pick -->
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center;">
+                    <span style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Quick Pick:</span>
+                    <button type="button" class="loc-chip-btn" onclick="applyManualLandmark('Master Canteen Square')" style="padding: 3px 8px; border-radius: 12px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 0.75rem; cursor: pointer; font-family: inherit;">Master Canteen</button>
+                    <button type="button" class="loc-chip-btn" onclick="applyManualLandmark('Saheed Nagar Main Road')" style="padding: 3px 8px; border-radius: 12px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 0.75rem; cursor: pointer; font-family: inherit;">Saheed Nagar</button>
+                    <button type="button" class="loc-chip-btn" onclick="applyManualLandmark('Unit 4 Market')" style="padding: 3px 8px; border-radius: 12px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 0.75rem; cursor: pointer; font-family: inherit;">Unit 4 Market</button>
+                    <button type="button" class="loc-chip-btn" onclick="applyManualLandmark('Patia Infocity Square')" style="padding: 3px 8px; border-radius: 12px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 0.75rem; cursor: pointer; font-family: inherit;">Patia Infocity</button>
+                    <button type="button" class="loc-chip-btn" onclick="applyManualLandmark('Nayapalli IRC Village')" style="padding: 3px 8px; border-radius: 12px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 0.75rem; cursor: pointer; font-family: inherit;">Nayapalli</button>
+                    <button type="button" class="loc-chip-btn" onclick="applyManualLandmark('Khandagiri Square')" style="padding: 3px 8px; border-radius: 12px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 0.75rem; cursor: pointer; font-family: inherit;">Khandagiri</button>
+                </div>
+
+                <div style="font-size: 0.78rem; color: #64748b; margin-top: 8px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
+                    <span id="coordDisplay">Coordinates: 20.2961° N, 85.8245° E</span>
+                    <span>Click or drag pin on map to adjust exact spot</span>
+                </div>
+            </div>
+
+            <!-- Interactive Map Pin Dropper -->
+            <div id="reportLocationMap" style="height: 190px; width: 100%; border-radius: 10px; margin-top: 10px; border: 1px solid #e2e8f0; z-index: 1;"></div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PRIVACY MESSAGE
+        ================================================== -->
+
+        <div class="privacy-message">
+
+            <div class="privacy-icon">
+                🛡️
+            </div>
+
+            <div>
+
+                <strong data-i18n="privacyTitle">
+                    Your privacy matters
+                </strong>
+
+                <p data-i18n="privacyDescription">
+                    Your personal information will only be used
+                    for resolving this civic issue.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SUCCESS MESSAGE
+        ================================================== -->
+
+        <div id="successMessage"
+             class="success-message">
+
+            <span>✓</span>
+
+            <span data-i18n="saved">
+                Your report has been saved successfully.
+            </span>
+
+        </div>
+
+
+
+        <!-- =================================================
+             BOTTOM ACTION
+        ================================================== -->
+
+        <div class="card-footer">
+
+            <div class="required-note">
+
+                <span class="required">*</span>
+
+                <span data-i18n="requiredFields">
+                    Required fields
+                </span>
+
+            </div>
+
+
+            <button id="continueButton"
+                    class="continue-btn"
+                    type="button"
+                    disabled>
+
+                <span data-i18n="continue">
+                    Continue
+                </span>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         TRUST FEATURES
+    ================================================== -->
+
+    <div class="trust-grid">
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                🔐
+            </div>
+
+            <div>
+
+                <strong data-i18n="privacy">
+                    Privacy protected
+                </strong>
+
+                <span data-i18n="privacySmall">
+                    Your data stays protected
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                📁
+            </div>
+
+            <div>
+
+                <strong data-i18n="evidenceSafe">
+                    Evidence preserved
+                </strong>
+
+                <span data-i18n="evidenceSmall">
+                    Original evidence remains safe
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                🧠
+            </div>
+
+            <div>
+
+                <strong data-i18n="smartRouting">
+                    Smart routing
+                </strong>
+
+                <span data-i18n="routingSmall">
+                    AI suggests the right department
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="trust-item">
+
+            <div class="trust-icon">
+                👁️
+            </div>
+
+            <div>
+
+                <strong data-i18n="transparent">
+                    Transparent tracking
+                </strong>
+
+                <span data-i18n="transparentSmall">
+                    Track your issue status
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="maps-adapter.js"></script>
+<script src="api.js"></script>
+<script src="whatsapp-bot.js"></script>
+<script src="report.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+services:
+  jansetu-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jansetu-service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-jansetu-super-secret-jwt-key-change-in-production-2026}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-1.5-flash}
+      - DATABASE_URL=sqlite:///./jansetu.db
+    volumes:
+      # Persist SQLite database and media uploads across container restarts
+      - jansetu-data:/app/backend/uploads
+      - jansetu-db:/app/backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  jansetu-data:
+    driver: local
+  jansetu-db:
+    driver: local
