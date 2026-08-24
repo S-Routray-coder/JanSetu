@@ -143,19 +143,22 @@ function closeReportModal() {
 
 async function loginDemo() {
     const selectedRole = document.querySelector('input[name="role"]:checked');
-    if (!selectedRole) {
-        showToast("Please select Citizen or Officer.", "!");
-        return;
-    }
-    const role = selectedRole.value;
+    const role = selectedRole ? selectedRole.value : "citizen";
 
     const emailInput = document.getElementById("loginEmail");
     const passwordInput = document.getElementById("loginPassword");
-    const email = emailInput ? emailInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
     const password = passwordInput ? passwordInput.value.trim() : "";
 
     if (email === "") {
         showToast("Please enter your email address.", "!");
+        if (emailInput) emailInput.focus();
+        return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (!emailRegex.test(email)) {
+        showToast("Please enter a valid email (e.g. name@example.com).", "!");
         if (emailInput) emailInput.focus();
         return;
     }
@@ -166,7 +169,7 @@ async function loginDemo() {
         return;
     }
 
-    showToast("Authenticating...", "⏳");
+    showToast("Verifying account...", "⏳");
 
     try {
         const res = await JanSetuAPI.login(email, password);
@@ -188,16 +191,20 @@ async function loginDemo() {
         } else {
             const errorMsg = res.data?.detail || "Invalid email or password.";
             showToast(errorMsg, "!");
+            if (res.status === 404) {
+                // Email does not exist
+                setTimeout(() => {
+                    const signupText = document.querySelector(".signup-text");
+                    if (signupText) {
+                        signupText.style.color = "#dc2626";
+                        signupText.style.fontWeight = "bold";
+                    }
+                }, 500);
+            }
         }
     } catch (err) {
-        console.warn("Backend not reachable or error, falling back to demo:", err);
-        localStorage.setItem("userRole", role);
-        localStorage.setItem("userEmail", email);
-        if (role === "officer") {
-            window.location.href = "officerdashboard.html";
-        } else {
-            window.location.href = "citizendashboard.html";
-        }
+        console.warn("Connection error:", err);
+        showToast("Unable to connect to server. Please try again.", "!");
     }
 }
 

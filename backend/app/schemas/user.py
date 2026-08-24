@@ -53,3 +53,15 @@ class Token(BaseModel):
 class TokenPayload(BaseModel):
     sub: Optional[str] = None
     exp: Optional[int] = None
+
+
+class EmailVerifyRequest(BaseModel):
+    email: str
+
+
+class EmailVerifyResponse(BaseModel):
+    email: str
+    is_valid_format: bool
+    exists_in_database: bool
+    message: str
+

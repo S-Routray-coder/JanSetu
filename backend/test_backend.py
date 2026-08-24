@@ -96,6 +96,51 @@ def test_auth_signup_new_user(client):
     assert data["user"]["ward"] == "Ward 14"
 
 
+def test_auth_email_verification_and_existence(client):
+    # 1. Test verify-email endpoint for existing email
+    res_exist = client.post("/api/v1/auth/verify-email", json={"email": "citizen@jansetu.in"})
+    assert res_exist.status_code == 200
+    assert res_exist.json()["is_valid_format"] is True
+    assert res_exist.json()["exists_in_database"] is True
+
+    # 2. Test verify-email endpoint for new email
+    res_new = client.post("/api/v1/auth/verify-email", json={"email": "unregistered@example.com"})
+    assert res_new.status_code == 200
+    assert res_new.json()["is_valid_format"] is True
+    assert res_new.json()["exists_in_database"] is False
+
+    # 3. Test verify-email with invalid format
+    res_invalid = client.post("/api/v1/auth/verify-email", json={"email": "notanemail"})
+    assert res_invalid.status_code == 200
+    assert res_invalid.json()["is_valid_format"] is False
+
+    # 4. Test login with non-existent email (should return 404)
+    res_login_404 = client.post("/api/v1/auth/login", json={
+        "email": "ghostuser999@example.com",
+        "password": "password123"
+    })
+    assert res_login_404.status_code == 404
+    assert "No account found" in res_login_404.json()["detail"]
+
+    # 5. Test login with wrong password (should return 401)
+    res_login_401 = client.post("/api/v1/auth/login", json={
+        "email": "citizen@jansetu.in",
+        "password": "wrongpassword123"
+    })
+    assert res_login_401.status_code == 401
+    assert "Incorrect password" in res_login_401.json()["detail"]
+
+    # 6. Test duplicate signup (should return 400)
+    res_dup = client.post("/api/v1/auth/signup", json={
+        "email": "citizen@jansetu.in",
+        "password": "password123",
+        "full_name": "Duplicate User"
+    })
+    assert res_dup.status_code == 400
+    assert "already exists" in res_dup.json()["detail"]
+
+
+
 def test_ai_triage_preview(client):
     # Test Road Pothole in Hindi/English
     res = client.post("/api/v1/triage/preview", json={

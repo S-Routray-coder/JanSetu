@@ -70,6 +70,26 @@ const JanSetuAPI = {
         return { ok: res.ok, status: res.status, data };
     },
 
+    async verifyEmail(email) {
+        try {
+            const res = await fetch(`${API_BASE_URL}/auth/verify-email`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+            return await res.json();
+        } catch (e) {
+            // Regex fallback
+            const valid = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(String(email || "").trim());
+            return {
+                email,
+                is_valid_format: valid,
+                exists_in_database: false,
+                message: valid ? "Valid email format." : "Invalid email format."
+            };
+        }
+    },
+
     async getProfile() {
         const res = await this.fetchWithAuth("/auth/me");
         return res.json();
